@@ -24,7 +24,7 @@ const Home = () => {
           </div>
           <div className={`row ${styles.section}`}>
             <div className="col">
-              <p>App</p>
+              <p>You can add accounts to track in the settings below.</p>
             </div>
           </div>
           <div className={`row ${styles.section}`}>

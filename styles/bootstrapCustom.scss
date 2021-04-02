@@ -1,8 +1,20 @@
 @use './colors';
 // custom colors
+$dark: colors.$primary-dark;
+$light: colors.$primary-light;
+
+// modals
 $modal-content-bg: colors.$primary-dark;
 $modal-content-border-color: colors.$primary-light;
 $modal-header-border-color: colors.$primary-light;
 $modal-footer-border-color:colors.$primary-light;
+
+// forms
+$form-select-color: colors.$primary-light;
+$form-select-bg: colors.$primary-dark;
+$input-bg: colors.$primary-dark;
+$input-color: colors.$primary-light;
+$input-border-color: colors.$primary-light;
+
 
 @import '../node_modules/bootstrap/scss/bootstrap';
