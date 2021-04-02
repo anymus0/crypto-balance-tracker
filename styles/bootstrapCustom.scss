@@ -1,0 +1,8 @@
+@use './colors';
+// custom colors
+$modal-content-bg: colors.$primary-dark;
+$modal-content-border-color: colors.$primary-light;
+$modal-header-border-color: colors.$primary-light;
+$modal-footer-border-color:colors.$primary-light;
+
+@import '../node_modules/bootstrap/scss/bootstrap';
