@@ -1,5 +1,5 @@
 import Head from "next/head";
-import Settings from "../components/Settings";
+import SettingsComp from "../components/SettingsComp";
 import styles from "../styles/Home.module.scss";
 
 const Home = () => {
@@ -29,7 +29,7 @@ const Home = () => {
           </div>
           <div className={`row ${styles.section}`}>
             <div className="col">
-              <Settings />
+              <SettingsComp />
             </div>
           </div>
         </div>
