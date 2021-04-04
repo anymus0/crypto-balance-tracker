@@ -1,3 +1,5 @@
+import { faTrash } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { Account, accountType } from "../models/Account";
 
 // component
@@ -6,22 +8,22 @@ const AccountComp = (props: {
   removeHandler: (accountID: string) => void;
 }) => {
   return (
-    <div className="container">
+    <div className="container-fluid">
       <div className="row">
-        <div className="col">
-          <p>Type: {accountType[props.account.type]}</p>
+        <div className="col-5">
+          <p>{accountType[props.account.type]}</p>
         </div>
         <div className="col">
-          <p>Address: {props.account.value}</p>
+          <p>{props.account.value}</p>
         </div>
-        <div className="col">
+        <div className="col-1">
           <button
             className="btn btn-sm btn-danger"
             onClick={() => {
               props.removeHandler(props.account.id)
             }}
           >
-            X
+            <FontAwesomeIcon icon={faTrash} />
           </button>
         </div>
       </div>
