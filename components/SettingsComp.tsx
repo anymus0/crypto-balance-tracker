@@ -1,5 +1,5 @@
-import { faPlus } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faPlus } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { v4 as uuidv4 } from "uuid";
 import React, { Dispatch, useState, SetStateAction, useEffect } from "react";
 import styles from "../styles/Settings.module.scss";

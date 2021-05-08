@@ -1,5 +1,5 @@
-import { faTrash } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faAddressBook } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Account, accountType } from "../models/Account";
 
 // component
@@ -23,7 +23,7 @@ const AccountComp = (props: {
               props.removeHandler(props.account.id)
             }}
           >
-            <FontAwesomeIcon icon={faTrash} />
+            <FontAwesomeIcon icon={faAddressBook} />
           </button>
         </div>
       </div>
