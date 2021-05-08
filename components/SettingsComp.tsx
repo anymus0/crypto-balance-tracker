@@ -1,18 +1,8 @@
-import { faPlus } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { v4 as uuidv4 } from "uuid";
 import React, { Dispatch, useState, SetStateAction, useEffect } from "react";
 import styles from "../styles/Settings.module.scss";
 import { Account, accountType } from "../models/Account";
 import AccountComp from "./AccountComp";
-
-// outside functions
-const getAccountListFromLS = (): Account[] => {
-  const accountList: Account[] = JSON.parse(
-    localStorage.getItem("accountList")
-  );
-  return accountList;
-};
 
 const saveAccountListToLS = (accountList: Account[]): void => {
   localStorage.setItem("accountList", JSON.stringify(accountList));
@@ -22,7 +12,7 @@ const saveAccountListToLS = (accountList: Account[]): void => {
 const emptyAccountList = <p>There are no accounts yet</p>;
 
 // component
-const SettingsComp = () => {
+const SettingsComp = (props: { accountList: Account[] }) => {
   // state variables
   const [accountList, setAccountList]: [
     Account[],
@@ -37,7 +27,7 @@ const SettingsComp = () => {
   const [accountValueForm, setAccountValueForm]: [
     string,
     Dispatch<SetStateAction<string>>
-  ] = useState('');
+  ] = useState("");
 
   // inside functions
   const createNewAccount = (): Account => {
@@ -56,12 +46,9 @@ const SettingsComp = () => {
     setAccountList(filteredAccountList);
   };
 
-  // run only on mount
   useEffect(() => {
-    // get 'accountList' from localStorage if it was saved before
-    if (getAccountListFromLS() !== null && window) {
-      setAccountList(getAccountListFromLS());
-    }
+    // set local 'accountList' from prop
+    setAccountList(props.accountList);
   }, []);
 
   return (
@@ -103,12 +90,20 @@ const SettingsComp = () => {
                         className="form-select"
                         value={accountTypeForm}
                         onChange={(formEvent) => {
-                          setAccountTypeForm(formEvent.target.options.selectedIndex);
+                          setAccountTypeForm(
+                            formEvent.target.options.selectedIndex
+                          );
                         }}
                       >
-                        <option value={accountType.Eth}>ETH wallet address</option>
-                        <option value={accountType.Binance}>Binance API key</option>
-                        <option value={accountType.Kucoin}>Kucoin API key</option>
+                        <option value={accountType.Eth}>
+                          ETH wallet address
+                        </option>
+                        <option value={accountType.Binance}>
+                          Binance API key
+                        </option>
+                        <option value={accountType.Kucoin}>
+                          Kucoin API key
+                        </option>
                       </select>
                     </div>
                     <div className="col-4">
@@ -116,7 +111,9 @@ const SettingsComp = () => {
                         type="text"
                         className="form-control"
                         value={accountValueForm}
-                        onChange={(formEvent) => {setAccountValueForm(formEvent.target.value)}}
+                        onChange={(formEvent) => {
+                          setAccountValueForm(formEvent.target.value);
+                        }}
                       />
                     </div>
                     <div className="col-2">
@@ -129,7 +126,7 @@ const SettingsComp = () => {
                           ]);
                         }}
                       >
-                        <FontAwesomeIcon icon={faPlus} />
+                        <i className="bi bi-plus"></i>
                       </button>
                     </div>
                   </div>

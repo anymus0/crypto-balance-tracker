@@ -1,8 +1,32 @@
 import Head from "next/head";
+import React, { Dispatch, useState, SetStateAction, useEffect } from "react";
 import SettingsComp from "../components/SettingsComp";
 import styles from "../styles/Home.module.scss";
+import { Account, accountType } from "../models/Account";
 
 const Home = () => {
+  // state variables
+  const [accountList, setAccountList]: [
+    Account[],
+    Dispatch<SetStateAction<Account[]>>
+  ] = useState([]);
+
+  // outside functions
+  const getAccountListFromLS = (): Account[] => {
+    const accountList: Account[] = JSON.parse(
+      localStorage.getItem("accountList")
+    );
+    return accountList;
+  };
+
+  // run only on mount
+  useEffect(() => {
+    // get 'accountList' from localStorage if it was saved before
+    if (getAccountListFromLS() !== null && window) {
+      setAccountList(getAccountListFromLS());
+    }
+  }, []);
+
   return (
     <div id="app">
       <Head>
@@ -29,7 +53,7 @@ const Home = () => {
           </div>
           <div className={`row ${styles.section}`}>
             <div className="col">
-              <SettingsComp />
+              <SettingsComp accountList={accountList} />
             </div>
           </div>
         </div>
