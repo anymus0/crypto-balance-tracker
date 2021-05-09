@@ -1,6 +1,7 @@
 // React/Next
 import Head from "next/head";
 import React, { Dispatch, useState, SetStateAction, useEffect } from "react";
+import { GetServerSideProps } from "next";
 // Styles/Comps
 import SettingsComp from "../components/SettingsComp";
 import EthAccountComp from "../components/EthAccountComp";
@@ -8,11 +9,27 @@ import styles from "../styles/Home.module.scss";
 // models
 import { Account, accountType } from "../models/Account";
 import { EthAccount } from "../models/EthAccount";
+import { CryptocurrencyData } from "../models/CryptocurrencyData";
 // web3
 import Web3 from "web3";
 const web3 = new Web3("wss://lagoon2.lagooncompany.xyz/ws");
 
-const Home = () => {
+export const getServerSideProps: GetServerSideProps = async () => {
+  const coingeckoAPI = "https://api.coingecko.com/api/v3";
+  const ethDataRes = await fetch(
+    `${coingeckoAPI}/coins/markets?vs_currency=usd&ids=ethereum`
+  );
+  console.log(ethDataRes);
+  const ethData: CryptocurrencyData[] = await ethDataRes.json();
+  const data = {
+    ethPrice: ethData[0].current_price,
+  };
+  return {
+    props: data,
+  };
+};
+
+const Home = (data: { ethPrice: number }) => {
   // state variables
   const [accountList, setAccountList]: [
     Account[],
@@ -115,11 +132,11 @@ const Home = () => {
           <div className={`row ${styles.section}`}>
             {ethAccountList.length > 0 &&
               ethAccountList.map((ethAccount) => (
-                <div className="col-xl-3 col-lg-4 col-md-6 col-sm-12 mt-3">
-                  <EthAccountComp
-                    account={ethAccount}
-                    key={ethAccount.address}
-                  />
+                <div
+                  className="col-xl-3 col-lg-4 col-md-6 col-sm-12 mt-3"
+                  key={ethAccount.address}
+                >
+                  <EthAccountComp account={ethAccount} ethPrice={data.ethPrice} />
                 </div>
               ))}
           </div>

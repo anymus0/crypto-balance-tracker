@@ -1,4 +1,4 @@
 export interface EthAccount {
   address: string;
-  balance: Number
+  balance: number
 }
