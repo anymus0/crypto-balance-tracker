@@ -12,13 +12,11 @@ const saveAccountListToLS = (accountList: Account[]): void => {
 const emptyAccountList = <p>There are no accounts yet</p>;
 
 // component
-const SettingsComp = (props: { accountList: Account[] }) => {
+const SettingsComp = (props: {
+  accountList: Account[];
+  setAccountList: (value: React.SetStateAction<Account[]>) => void;
+}) => {
   // state variables
-  const [accountList, setAccountList]: [
-    Account[],
-    Dispatch<SetStateAction<Account[]>>
-  ] = useState([]);
-
   const [accountTypeForm, setAccountTypeForm]: [
     accountType,
     Dispatch<SetStateAction<accountType>>
@@ -40,19 +38,19 @@ const SettingsComp = (props: { accountList: Account[] }) => {
   };
 
   const removeAccount = (accountID: string): void => {
-    const filteredAccountList = accountList.filter((account) => {
+    const filteredAccountList = props.accountList.filter((account) => {
       return account.id !== accountID;
     });
-    setAccountList(filteredAccountList);
+    props.setAccountList(filteredAccountList);
   };
 
   useEffect(() => {
     // set local 'accountList' from prop
-    setAccountList(props.accountList);
+    props.setAccountList(props.accountList);
   }, []);
 
   return (
-    <div id="settings">
+    <div>
       <button
         className="btn btn-info"
         data-bs-toggle="modal"
@@ -120,7 +118,7 @@ const SettingsComp = (props: { accountList: Account[] }) => {
                       <button
                         className="btn btn-success"
                         onClick={() => {
-                          setAccountList((accountList) => [
+                          props.setAccountList((accountList) => [
                             ...accountList,
                             createNewAccount(),
                           ]);
@@ -132,9 +130,9 @@ const SettingsComp = (props: { accountList: Account[] }) => {
                   </div>
                   <div className="row pt-4">
                     <div className="col">
-                      {accountList.length === 0
+                      {props.accountList.length === 0
                         ? emptyAccountList
-                        : accountList.map((account) => (
+                        : props.accountList.map((account) => (
                             <AccountComp
                               account={account}
                               key={account.id}
@@ -158,7 +156,7 @@ const SettingsComp = (props: { accountList: Account[] }) => {
                 type="button"
                 className="btn btn-primary"
                 onClick={() => {
-                  saveAccountListToLS(accountList);
+                  saveAccountListToLS(props.accountList);
                 }}
               >
                 Save changes

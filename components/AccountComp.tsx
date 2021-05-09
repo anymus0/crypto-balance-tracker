@@ -21,7 +21,7 @@ const AccountComp = (props: {
               props.removeHandler(props.account.id)
             }}
           >
-            -
+            <i className="bi bi-trash"></i>
           </button>
         </div>
       </div>
