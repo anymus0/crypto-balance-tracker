@@ -17,7 +17,7 @@ const Home = () => {
   const [accountList, setAccountList]: [
     Account[],
     Dispatch<SetStateAction<Account[]>>
-  ] = useState(undefined);
+  ] = useState([]);
 
   const [ethAccountList, setEthAccountList]: [
     EthAccount[],
@@ -43,7 +43,7 @@ const Home = () => {
         if (account.type === accountType.Eth) {
           const balanceInWei = await web3.eth.getBalance(account.value);
           const balance = parseFloat(web3.utils.fromWei(balanceInWei));
-          accountBalances.push({ account: account.value, balance: balance });
+          accountBalances.push({ address: account.value, balance: balance });
         }
       }
       return accountBalances;
@@ -88,52 +88,43 @@ const Home = () => {
           crossOrigin="anonymous"
         ></script>
       </Head>
-      {accountList !== undefined && (
-        <main className={styles.containerCentered}>
-          <div className="container">
-            <div className="row">
-              <div className="col">
-                <h2>Balance Tracker</h2>
-              </div>
-            </div>
-            <div className={`row ${styles.section}`}>
-              <div className="col">
-                <p>You can add accounts to track in the settings below.</p>
-              </div>
-            </div>
-            <div className={`row ${styles.section}`}>
-              <div className="col">
-                <SettingsComp
-                  accountList={accountList}
-                  setAccountList={setAccountList}
-                />
-              </div>
-            </div>
-            <div className={`row ${styles.section}`}>
-              <div className="col">
-                <button
-                  className="btn btn-light"
-                  onClick={() => {
-                    getEthAccounts(accountList).then((ethAccs) => {
-                      setEthAccountList(ethAccs);
-                      console.log(ethAccountList.length);
-                    });
-                  }}
-                >
-                  asd
-                </button>
-                {ethAccountList.length > 0 &&
-                  ethAccountList.map((ethAccount) => (
-                    <EthAccountComp
-                      account={ethAccount}
-                      key={ethAccount.account}
-                    />
-                  ))}
-              </div>
+      <header className={styles.containerCentered}>
+        <div className="container">
+          <div className="row">
+            <div className="col">
+              <h2>Balance Tracker</h2>
             </div>
           </div>
-        </main>
-      )}
+          <div className={`row ${styles.section}`}>
+            <div className="col">
+              <p>You can add accounts to track in the settings below.</p>
+            </div>
+          </div>
+          <div className={`row ${styles.section}`}>
+            <div className="col">
+              <SettingsComp
+                accountList={accountList}
+                setAccountList={setAccountList}
+              />
+            </div>
+          </div>
+        </div>
+      </header>
+      <main>
+        <div className="container pt-5">
+          <div className={`row ${styles.section}`}>
+            {ethAccountList.length > 0 &&
+              ethAccountList.map((ethAccount) => (
+                <div className="col-xl-3 col-lg-4 col-md-6 col-sm-12 mt-3">
+                  <EthAccountComp
+                    account={ethAccount}
+                    key={ethAccount.address}
+                  />
+                </div>
+              ))}
+          </div>
+        </div>
+      </main>
     </div>
   );
 };

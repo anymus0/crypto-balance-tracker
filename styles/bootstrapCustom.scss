@@ -16,6 +16,9 @@ $input-bg: colors.$primary-dark;
 $input-color: colors.$primary-light;
 $input-border-color: colors.$primary-light;
 
+// cards
+$card-bg: colors.$secondary-dark;
+
 
 @import '../node_modules/bootstrap/scss/bootstrap';
 @import '../node_modules/bootstrap-icons/font/bootstrap-icons.css';

@@ -12,7 +12,7 @@ const AccountComp = (props: {
           <p>{accountType[props.account.type]}</p>
         </div>
         <div className="col">
-          <p>{props.account.value}</p>
+          <p>{props.account.value.slice(0, 12)}...</p>
         </div>
         <div className="col-1">
           <button
