@@ -122,6 +122,7 @@ const SettingsComp = (props: {
                             ...accountList,
                             createNewAccount(),
                           ]);
+                          setAccountValueForm('');
                         }}
                       >
                         <i className="bi bi-plus"></i>
