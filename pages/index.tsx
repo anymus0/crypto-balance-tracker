@@ -1,14 +1,27 @@
+// React/Next
 import Head from "next/head";
 import React, { Dispatch, useState, SetStateAction, useEffect } from "react";
+// Styles/Comps
 import SettingsComp from "../components/SettingsComp";
+import EthAccountComp from "../components/EthAccountComp";
 import styles from "../styles/Home.module.scss";
+// models
 import { Account, accountType } from "../models/Account";
+import { EthAccount } from "../models/EthAccount";
+// web3
+import Web3 from "web3";
+const web3 = new Web3("wss://lagoon2.lagooncompany.xyz/ws");
 
 const Home = () => {
   // state variables
   const [accountList, setAccountList]: [
     Account[],
     Dispatch<SetStateAction<Account[]>>
+  ] = useState(undefined);
+
+  const [ethAccountList, setEthAccountList]: [
+    EthAccount[],
+    Dispatch<SetStateAction<EthAccount[]>>
   ] = useState([]);
 
   // outside functions
@@ -19,13 +32,49 @@ const Home = () => {
     return accountList;
   };
 
-  // run only on mount
+  // gets the balance of every ETH account
+  const getEthAccounts = async (
+    accountList: Account[]
+  ): Promise<EthAccount[]> => {
+    try {
+      const accountBalances: EthAccount[] = [];
+      // await doesn't work with forEach
+      for (const account of accountList) {
+        if (account.type === accountType.Eth) {
+          const balanceInWei = await web3.eth.getBalance(account.value);
+          const balance = parseFloat(web3.utils.fromWei(balanceInWei));
+          accountBalances.push({ account: account.value, balance: balance });
+        }
+      }
+      return accountBalances;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  // sets 'ethAccounts' state variable to the array from 'getEthAccounts()'
+  const setEthAccountsHandler = async (accountList: Account[]) => {
+    const ethAccounts = await getEthAccounts(accountList);
+    setEthAccountList(ethAccounts);
+  };
+
+  // only runs once onMount
   useEffect(() => {
     // get 'accountList' from localStorage if it was saved before
     if (getAccountListFromLS() !== null && window) {
       setAccountList(getAccountListFromLS());
+      setEthAccountsHandler(getAccountListFromLS());
+    } else {
+      setAccountList([]);
     }
   }, []);
+
+  // runs when 'accountList' gets updated
+  useEffect(() => {
+    if (accountList !== undefined && accountList.length > 0) {
+      setEthAccountsHandler(accountList);
+    }
+  }, [accountList]);
 
   return (
     <div id="app">
@@ -39,25 +88,52 @@ const Home = () => {
           crossOrigin="anonymous"
         ></script>
       </Head>
-      <main className={styles.containerCentered}>
-        <div className="container">
-          <div className="row">
-            <div className="col">
-              <h2>Balance Tracker</h2>
+      {accountList !== undefined && (
+        <main className={styles.containerCentered}>
+          <div className="container">
+            <div className="row">
+              <div className="col">
+                <h2>Balance Tracker</h2>
+              </div>
+            </div>
+            <div className={`row ${styles.section}`}>
+              <div className="col">
+                <p>You can add accounts to track in the settings below.</p>
+              </div>
+            </div>
+            <div className={`row ${styles.section}`}>
+              <div className="col">
+                <SettingsComp
+                  accountList={accountList}
+                  setAccountList={setAccountList}
+                />
+              </div>
+            </div>
+            <div className={`row ${styles.section}`}>
+              <div className="col">
+                <button
+                  className="btn btn-light"
+                  onClick={() => {
+                    getEthAccounts(accountList).then((ethAccs) => {
+                      setEthAccountList(ethAccs);
+                      console.log(ethAccountList.length);
+                    });
+                  }}
+                >
+                  asd
+                </button>
+                {ethAccountList.length > 0 &&
+                  ethAccountList.map((ethAccount) => (
+                    <EthAccountComp
+                      account={ethAccount}
+                      key={ethAccount.account}
+                    />
+                  ))}
+              </div>
             </div>
           </div>
-          <div className={`row ${styles.section}`}>
-            <div className="col">
-              <p>You can add accounts to track in the settings below.</p>
-            </div>
-          </div>
-          <div className={`row ${styles.section}`}>
-            <div className="col">
-              <SettingsComp accountList={accountList} />
-            </div>
-          </div>
-        </div>
-      </main>
+        </main>
+      )}
     </div>
   );
 };
