@@ -2,14 +2,13 @@
 import Head from "next/head";
 import React, { Dispatch, useState, SetStateAction, useEffect } from "react";
 import { GetServerSideProps } from "next";
-import { fetchEthData } from './../fetch';
+import { fetchEthData } from "./../fetch";
 // Styles/Comps
 import SettingsComp from "../components/SettingsComp";
 import EthAccountComp from "../components/EthAccountComp";
 import styles from "../styles/Home.module.scss";
 // models
-import { Account, accountType } from "../models/Account";
-import { EthAccount } from "../models/EthAccount";
+import { Account, accountType, EthAccount } from "../models/Account";
 // web3
 import Web3 from "web3";
 const web3 = new Web3("wss://lagoon2.lagooncompany.xyz/ws");
@@ -17,7 +16,7 @@ const web3 = new Web3("wss://lagoon2.lagooncompany.xyz/ws");
 export const getServerSideProps: GetServerSideProps = async () => {
   const ethData = await fetchEthData();
   const data = {
-    ethPrice: ethData[0].current_price
+    ethPrice: ethData[0].current_price,
   };
   return {
     props: data,
@@ -35,6 +34,11 @@ const Home = (data: { ethPrice: number }) => {
     EthAccount[],
     Dispatch<SetStateAction<EthAccount[]>>
   ] = useState([]);
+
+  const [ethPrice, setEthPrice]: [
+    number,
+    Dispatch<SetStateAction<number>>
+  ] = useState(data.ethPrice);
 
   // outside functions
   const getAccountListFromLS = (): Account[] => {
@@ -79,6 +83,12 @@ const Home = (data: { ethPrice: number }) => {
     } else {
       setAccountList([]);
     }
+    // refresh ethPrice every 5 seconds
+    setInterval(() => {
+      fetchEthData().then(ethData => {
+        setEthPrice(ethData[0].current_price)
+      })
+    }, 5000)
   }, []);
 
   // runs when 'accountList' gets updated
@@ -131,7 +141,10 @@ const Home = (data: { ethPrice: number }) => {
                   className="col-xl-3 col-lg-4 col-md-6 col-sm-12 mt-3"
                   key={ethAccount.address}
                 >
-                  <EthAccountComp account={ethAccount} ethPrice={data.ethPrice} />
+                  <EthAccountComp
+                    account={ethAccount}
+                    ethPrice={ethPrice}
+                  />
                 </div>
               ))}
           </div>

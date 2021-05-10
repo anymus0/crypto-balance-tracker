@@ -9,3 +9,8 @@ export interface Account {
   value: string;
   id: string;
 }
+
+export interface EthAccount {
+  address: string;
+  balance: number
+}
