@@ -2,6 +2,7 @@
 import Head from "next/head";
 import React, { Dispatch, useState, SetStateAction, useEffect } from "react";
 import { GetServerSideProps } from "next";
+import { fetchEthData } from './../fetch';
 // Styles/Comps
 import SettingsComp from "../components/SettingsComp";
 import EthAccountComp from "../components/EthAccountComp";
@@ -9,20 +10,14 @@ import styles from "../styles/Home.module.scss";
 // models
 import { Account, accountType } from "../models/Account";
 import { EthAccount } from "../models/EthAccount";
-import { CryptocurrencyData } from "../models/CryptocurrencyData";
 // web3
 import Web3 from "web3";
 const web3 = new Web3("wss://lagoon2.lagooncompany.xyz/ws");
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const coingeckoAPI = "https://api.coingecko.com/api/v3";
-  const ethDataRes = await fetch(
-    `${coingeckoAPI}/coins/markets?vs_currency=usd&ids=ethereum`
-  );
-  console.log(ethDataRes);
-  const ethData: CryptocurrencyData[] = await ethDataRes.json();
+  const ethData = await fetchEthData();
   const data = {
-    ethPrice: ethData[0].current_price,
+    ethPrice: ethData[0].current_price
   };
   return {
     props: data,
