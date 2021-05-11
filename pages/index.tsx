@@ -11,7 +11,7 @@ import styles from "../styles/Home.module.scss";
 import { Account, accountType, EthAccount } from "../models/Account";
 // web3
 import Web3 from "web3";
-const web3 = new Web3("wss://lagoon2.lagooncompany.xyz/ws");
+const web3 = new Web3(process.env.ethNodeURL);
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const ethData = await fetchEthData();
@@ -75,20 +75,25 @@ const Home = (data: { ethPrice: number }) => {
   };
 
   // only runs once onMount
+  // set accounts
   useEffect(() => {
     // get 'accountList' from localStorage if it was saved before
     if (getAccountListFromLS() !== null && window) {
       setAccountList(getAccountListFromLS());
       setEthAccountsHandler(getAccountListFromLS());
+      // refresh ethPrice & ethAccountBalances every 5 seconds
+      setInterval(async () => {
+        try {
+          const ethData = await fetchEthData();
+          setEthPrice(ethData[0].current_price);
+          setEthAccountsHandler(getAccountListFromLS());
+        } catch (error) {
+          console.error(error)
+        }
+      }, 5000);
     } else {
       setAccountList([]);
     }
-    // refresh ethPrice every 5 seconds
-    setInterval(() => {
-      fetchEthData().then(ethData => {
-        setEthPrice(ethData[0].current_price)
-      })
-    }, 5000)
   }, []);
 
   // runs when 'accountList' gets updated
@@ -141,10 +146,7 @@ const Home = (data: { ethPrice: number }) => {
                   className="col-xl-3 col-lg-4 col-md-6 col-sm-12 mt-3"
                   key={ethAccount.address}
                 >
-                  <EthAccountComp
-                    account={ethAccount}
-                    ethPrice={ethPrice}
-                  />
+                  <EthAccountComp account={ethAccount} ethPrice={ethPrice} />
                 </div>
               ))}
           </div>
