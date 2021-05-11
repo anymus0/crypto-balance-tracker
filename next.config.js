@@ -1,13 +1,14 @@
-const kucoin = require('./clientEnv');
+const clientEnvVariables = require('./clientEnv')
 
 const config = {
   future: {
     webpack5: true,
   },
   env: {
-    kucoinKey: kucoin.key,
-    kucoinSecret: kucoin.secret,
-    kucoinPasshrase: kucoin.passhrase,
+    ethNodeURL: clientEnvVariables.ethNodeURL,
+    kucoinKey: clientEnvVariables.kucoin.key,
+    kucoinSecret: clientEnvVariables.kucoin.secret,
+    kucoinPasshrase: clientEnvVariables.kucoin.passhrase,
   },
 }
 
