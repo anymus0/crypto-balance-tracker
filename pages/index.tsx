@@ -2,16 +2,14 @@
 import Head from "next/head";
 import React, { Dispatch, useState, SetStateAction, useEffect } from "react";
 import { GetServerSideProps } from "next";
-import { fetchEthData } from "./../fetch";
+import { fetchEthData, getEthAccounts } from "../getAccounts";
 // Styles/Comps
 import SettingsComp from "../components/SettingsComp";
 import EthAccountComp from "../components/EthAccountComp";
 import styles from "../styles/Home.module.scss";
 // models
-import { Account, accountType, EthAccount } from "../models/Account";
-// web3
-import Web3 from "web3";
-const web3 = new Web3(process.env.ethNodeURL);
+import { Account, EthAccount } from "../models/Account";
+
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const ethData = await fetchEthData();
@@ -46,26 +44,6 @@ const Home = (data: { ethPrice: number }) => {
       localStorage.getItem("accountList")
     );
     return accountList;
-  };
-
-  // gets the balance of every ETH account
-  const getEthAccounts = async (
-    accountList: Account[]
-  ): Promise<EthAccount[]> => {
-    try {
-      const accountBalances: EthAccount[] = [];
-      // await doesn't work with forEach
-      for (const account of accountList) {
-        if (account.type === accountType.Eth) {
-          const balanceInWei = await web3.eth.getBalance(account.value);
-          const balance = parseFloat(web3.utils.fromWei(balanceInWei));
-          accountBalances.push({ address: account.value, balance: balance });
-        }
-      }
-      return accountBalances;
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   // sets 'ethAccounts' state variable to the array from 'getEthAccounts()'
