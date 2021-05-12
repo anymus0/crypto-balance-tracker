@@ -141,10 +141,10 @@ const Home = (data: { ethPrice: number }) => {
         <div className="container pt-5">
           <div className={`row ${styles.section}`}>
             {ethAccountList.length > 0 &&
-              ethAccountList.map((ethAccount) => (
+              ethAccountList.map((ethAccount, index) => (
                 <div
                   className="col-xl-3 col-lg-4 col-md-6 col-sm-12 mt-3"
-                  key={ethAccount.address}
+                  key={index}
                 >
                   <EthAccountComp account={ethAccount} ethPrice={ethPrice} />
                 </div>
