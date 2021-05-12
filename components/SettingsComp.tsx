@@ -20,7 +20,7 @@ const SettingsComp = (props: {
   const [accountTypeForm, setAccountTypeForm]: [
     accountType,
     Dispatch<SetStateAction<accountType>>
-  ] = useState(1);
+  ] = useState(0);
 
   const [accountValueForm, setAccountValueForm]: [
     string,
@@ -44,10 +44,25 @@ const SettingsComp = (props: {
     props.setAccountList(filteredAccountList);
   };
 
+  const onSubmitHandler = () => {
+    // form can not be empty
+    if (
+      accountValueForm !== undefined &&
+      accountValueForm !== null &&
+      accountValueForm !== ""
+    ) {
+      props.setAccountList((accountList) => [
+        ...accountList,
+        createNewAccount(),
+      ]);
+      setAccountValueForm("");
+    }
+  };
+
   useEffect(() => {
     // set local 'accountList' from prop
     props.setAccountList(props.accountList);
-  }, []);
+  });
 
   return (
     <div>
@@ -78,69 +93,63 @@ const SettingsComp = (props: {
               ></button>
             </div>
             <div className={`modal-body ${styles.modalBodyPadding}`}>
-              <div className="accountManager">
-                <div className="container ps-0 pe-0">
-                  <div className="row">
-                    <div className="col-6">
-                      <select
-                        name="accountType"
-                        id="accountType"
-                        className="form-select"
-                        value={accountTypeForm}
-                        onChange={(formEvent) => {
-                          setAccountTypeForm(
-                            formEvent.target.options.selectedIndex
-                          );
-                        }}
-                      >
-                        <option value={accountType.Eth}>
-                          ETH wallet address
-                        </option>
-                        <option value={accountType.Binance}>
-                          Binance API key
-                        </option>
-                        <option value={accountType.Kucoin}>
-                          Kucoin API key
-                        </option>
-                      </select>
-                    </div>
-                    <div className="col-4">
-                      <input
-                        type="text"
-                        className="form-control"
-                        value={accountValueForm}
-                        onChange={(formEvent) => {
-                          setAccountValueForm(formEvent.target.value);
-                        }}
-                      />
-                    </div>
-                    <div className="col-2">
-                      <button
-                        className="btn btn-success"
-                        onClick={() => {
-                          props.setAccountList((accountList) => [
-                            ...accountList,
-                            createNewAccount(),
-                          ]);
-                          setAccountValueForm('');
-                        }}
-                      >
-                        <i className="bi bi-plus"></i>
-                      </button>
-                    </div>
+              <div className="container ps-0 pe-0">
+                <div className="row">
+                  <div className="col-6">
+                    <select
+                      name="accountType"
+                      id="accountType"
+                      className="form-select"
+                      onChange={(formEvent) => {
+                        setAccountTypeForm(
+                          formEvent.target.options.selectedIndex
+                        );
+                      }}
+                    >
+                      <option value={accountType.Eth}>
+                        ETH Account Address
+                      </option>
+                      <option value={accountType.Contract}>
+                        ETH Contract Address
+                      </option>
+                      <option value={accountType.Binance}>
+                        Binance API Key
+                      </option>
+                      <option value={accountType.Kucoin}>Kucoin API Key</option>
+                    </select>
                   </div>
-                  <div className="row pt-4">
-                    <div className="col">
-                      {props.accountList.length === 0
-                        ? emptyAccountList
-                        : props.accountList.map((account) => (
-                            <AccountComp
-                              account={account}
-                              key={account.id}
-                              removeHandler={removeAccount}
-                            />
-                          ))}
-                    </div>
+                  <div className="col-4">
+                    <input
+                      type="text"
+                      className="form-control"
+                      value={accountValueForm}
+                      onChange={(formEvent) => {
+                        setAccountValueForm(formEvent.target.value);
+                      }}
+                    />
+                  </div>
+                  <div className="col-2">
+                    <button
+                      className="btn btn-success"
+                      onClick={() => {
+                        onSubmitHandler();
+                      }}
+                    >
+                      <i className="bi bi-plus"></i>
+                    </button>
+                  </div>
+                </div>
+                <div className="row pt-4">
+                  <div className="col">
+                    {props.accountList.length === 0
+                      ? emptyAccountList
+                      : props.accountList.map((account) => (
+                          <AccountComp
+                            account={account}
+                            key={account.id}
+                            removeHandler={removeAccount}
+                          />
+                        ))}
                   </div>
                 </div>
               </div>

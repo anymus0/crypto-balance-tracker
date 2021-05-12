@@ -1,5 +1,6 @@
 export enum accountType {
   Eth,
+  Contract,
   Binance,
   Kucoin
 }
@@ -12,5 +13,11 @@ export interface Account {
 
 export interface EthAccount {
   address: string;
-  balance: number
+  balance: number;
+  Tokens?: Token[];
+}
+
+export interface Token {
+  symbol: string;
+  balance: number;
 }
