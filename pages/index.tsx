@@ -1,8 +1,7 @@
 // React/Next
 import Head from "next/head";
 import React, { Dispatch, useState, SetStateAction, useEffect } from "react";
-import { GetServerSideProps } from "next";
-import { fetchEthData, getEthAccounts } from "../getAccounts";
+import { getEthAccounts, fetchCryptoData } from "../getAccounts";
 // Styles/Comps
 import SettingsComp from "../components/SettingsComp";
 import EthAccountComp from "../components/EthAccountComp";
@@ -10,17 +9,7 @@ import styles from "../styles/Home.module.scss";
 // models
 import { Account, EthAccount } from "../models/Account";
 
-export const getServerSideProps: GetServerSideProps = async () => {
-  const ethData = await fetchEthData();
-  const data = {
-    ethPrice: ethData[0].current_price,
-  };
-  return {
-    props: data,
-  };
-};
-
-const Home = (data: { ethPrice: number }) => {
+const Home = () => {
   // state variables
   const [accountList, setAccountList]: [
     Account[],
@@ -33,7 +22,7 @@ const Home = (data: { ethPrice: number }) => {
   ] = useState([]);
 
   const [ethPrice, setEthPrice]: [number, Dispatch<SetStateAction<number>>] =
-    useState(data.ethPrice);
+    useState(0);
 
   // outside functions
   const getAccountListFromLS = (): Account[] => {
@@ -56,6 +45,7 @@ const Home = (data: { ethPrice: number }) => {
     if (getAccountListFromLS() !== null && window) {
       setAccountList(getAccountListFromLS());
       setEthAccountsHandler(getAccountListFromLS());
+      fetchCryptoData('ethereum').then(ethereumData => {setEthPrice(ethereumData.current_price)})
     } else {
       setAccountList([]);
     }
@@ -73,8 +63,8 @@ const Home = (data: { ethPrice: number }) => {
     let refresherID = null;
     refresherID = setInterval(async () => {
       try {
-        const ethData = await fetchEthData();
-        setEthPrice(ethData[0].current_price);
+        const ethereumData = await fetchCryptoData('ethereum');
+        setEthPrice(ethereumData.current_price)
         setEthAccountsHandler(accountList);
       } catch (error) {
         console.error(error);

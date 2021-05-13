@@ -4,18 +4,20 @@ import { Account, accountType, EthAccount, Token } from "./models/Account";
 import Web3 from "web3";
 const web3 = new Web3(process.env.ethNodeURL);
 
-export const fetchEthData = async () => {
+// TODO: fetch an array of crpytoIDs from the contracts
+export const fetchCryptoData = async (cryptoID: string) => {
   try {
     const coingeckoAPI = "https://api.coingecko.com/api/v3";
-    const ethDataRes = await fetch(
-      `${coingeckoAPI}/coins/markets?vs_currency=usd&ids=ethereum`
-    );
-    const ethData: CryptocurrencyData[] = await ethDataRes.json();
-    return ethData;
+    const fetchURL = `${coingeckoAPI}/coins/markets?vs_currency=usd&ids=${cryptoID}`;
+    const res = await fetch(fetchURL);
+    const data = await res.json();
+    const cryptoData: CryptocurrencyData = data[0];
+    return cryptoData;
   } catch (error) {
     console.log(error);
   }
 };
+
 
 // gets the balance of every ETH account
 export const getEthAccounts = async (
