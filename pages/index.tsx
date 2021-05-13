@@ -10,7 +10,6 @@ import styles from "../styles/Home.module.scss";
 // models
 import { Account, EthAccount } from "../models/Account";
 
-
 export const getServerSideProps: GetServerSideProps = async () => {
   const ethData = await fetchEthData();
   const data = {
@@ -33,10 +32,8 @@ const Home = (data: { ethPrice: number }) => {
     Dispatch<SetStateAction<EthAccount[]>>
   ] = useState([]);
 
-  const [ethPrice, setEthPrice]: [
-    number,
-    Dispatch<SetStateAction<number>>
-  ] = useState(data.ethPrice);
+  const [ethPrice, setEthPrice]: [number, Dispatch<SetStateAction<number>>] =
+    useState(data.ethPrice);
 
   // outside functions
   const getAccountListFromLS = (): Account[] => {
@@ -59,16 +56,6 @@ const Home = (data: { ethPrice: number }) => {
     if (getAccountListFromLS() !== null && window) {
       setAccountList(getAccountListFromLS());
       setEthAccountsHandler(getAccountListFromLS());
-      // refresh ethPrice & ethAccountBalances every 5 seconds
-      setInterval(async () => {
-        try {
-          const ethData = await fetchEthData();
-          setEthPrice(ethData[0].current_price);
-          setEthAccountsHandler(getAccountListFromLS());
-        } catch (error) {
-          console.error(error)
-        }
-      }, 5000);
     } else {
       setAccountList([]);
     }
@@ -80,6 +67,24 @@ const Home = (data: { ethPrice: number }) => {
       setEthAccountsHandler(accountList);
     }
   }, [accountList]);
+
+  useEffect(() => {
+    // refresh ethPrice & ethAccountBalances every 5 seconds
+    let refresherID = null;
+    refresherID = setInterval(async () => {
+      try {
+        const ethData = await fetchEthData();
+        setEthPrice(ethData[0].current_price);
+        setEthAccountsHandler(accountList);
+      } catch (error) {
+        console.error(error);
+      }
+    }, 5000);
+
+    return () => {
+      clearInterval(refresherID);
+    };
+  });
 
   return (
     <div id="app">
