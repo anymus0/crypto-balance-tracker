@@ -20,6 +20,20 @@ $input-btn-focus-color: colors.$primary-light;
 // cards
 $card-bg: colors.$secondary-dark;
 
+// list-group
+$list-group-bg: colors.$grey-blue;
+$list-group-color: colors.$primary-light;
+
+// accordion
+$accordion-bg: colors.$grey-blue;
+$accordion-button-color: colors.$primary-light;
+$accordion-border-color: colors.$primary-light;
+$accordion-button-active-color: colors.$secondary-light;
+$accordion-button-active-bg: colors.$secondary-dark;
+
+// badge
+$badge-color: colors.$grey-blue;
+
 
 @import '../node_modules/bootstrap/scss/bootstrap';
 @import '../node_modules/bootstrap-icons/font/bootstrap-icons.css';

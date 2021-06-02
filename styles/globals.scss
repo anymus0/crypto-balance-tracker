@@ -16,3 +16,7 @@ a {
 * {
   box-sizing: border-box;
 }
+
+.bg-primary-light {
+  background-color: colors.$primary-light !important;
+}

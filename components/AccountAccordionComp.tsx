@@ -59,7 +59,7 @@ const AccountAccordionComp = (props: {
       >
         <div className="accordion-body">
           <div className="container">
-            <div className="row">
+            <div className="row pb-3">
               <div className="col">
                 <input
                   type="text"
@@ -107,7 +107,7 @@ const AccountAccordionComp = (props: {
                       accountSecondaryInput === "")
                   }
                 >
-                  +
+                  <i className="bi bi-plus-lg"></i>
                 </button>
               </div>
             </div>
