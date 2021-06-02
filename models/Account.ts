@@ -1,23 +1,42 @@
-export enum accountType {
-  Eth,
-  Contract,
-  Binance,
-  Kucoin
-}
+export interface KucoinAccount {
+  value: string;
+  secret: string;
+  id: string;
+};
 
-export interface Account {
-  type: accountType;
+export interface BinanceAccount {
   value: string;
   id: string;
-}
+};
 
 export interface EthAccount {
-  address: string;
+  value: string;
   balance: number;
-  Tokens?: Token[];
-}
+  tokens: Token[];
+  id: string;
+};
 
 export interface Token {
   symbol: string;
   balance: number;
-}
+  decimals: number;
+};
+
+export interface ContractAccount {
+  value: string;
+  id: string;
+};
+
+export interface Account {
+  kucoinAccounts: KucoinAccount[];
+  binanceAccounts: BinanceAccount[];
+  ethAccounts: EthAccount[];
+  contractAccounts: ContractAccount[];
+};
+
+export enum accountType {
+  EthWallet,
+  Contract,
+  Binance,
+  Kucoin
+};

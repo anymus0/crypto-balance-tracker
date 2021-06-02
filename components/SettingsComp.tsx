@@ -1,68 +1,114 @@
 import { v4 as uuidv4 } from "uuid";
-import React, { Dispatch, useState, SetStateAction, useEffect } from "react";
+import React, { useContext } from "react";
 import styles from "../styles/Settings.module.scss";
-import { Account, accountType } from "../models/Account";
-import AccountComp from "./AccountComp";
-
-const saveAccountListToLS = (accountList: Account[]): void => {
-  localStorage.setItem("accountList", JSON.stringify(accountList));
-};
-
-// tsx templates
-const emptyAccountList = <p>There are no accounts yet</p>;
+import {
+  EthAccount,
+  ContractAccount,
+  accountType,
+  BinanceAccount,
+  KucoinAccount,
+} from "../models/Account";
+import AccountAccordionComp from "./AccountAccordionComp";
+import { SettingsContext } from "./../pages/index";
+import { Setting } from "../models/Setting";
 
 // component
-const SettingsComp = (props: {
-  accountList: Account[];
-  setAccountList: (value: React.SetStateAction<Account[]>) => void;
-}) => {
-  // state variables
-  const [accountTypeForm, setAccountTypeForm]: [
-    accountType,
-    Dispatch<SetStateAction<accountType>>
-  ] = useState(0);
+const SettingsComp = () => {
+  // use settings context
+  const { settings, setSettings } = useContext(SettingsContext);
+  // TODO: should save settings somehow
+  const saveAccounts = (): void => {
+    localStorage.setItem("settings", JSON.stringify(settings));
+  };
 
-  const [accountValueForm, setAccountValueForm]: [
-    string,
-    Dispatch<SetStateAction<string>>
-  ] = useState("");
-
-  // inside functions
-  const createNewAccount = (): Account => {
-    const newAccount: Account = {
+  // createAccount methods
+  const createEthAccount = (value: string): void => {
+    const newEthAccount: EthAccount = {
       id: uuidv4(),
-      type: accountTypeForm,
-      value: accountValueForm,
+      value: value,
+      balance: 0,
+      tokens: [],
     };
-    return newAccount;
+    const newSettings: Setting = JSON.parse(JSON.stringify(settings));
+    newSettings.account.ethAccounts.push(newEthAccount);
+    setSettings(newSettings);
   };
 
-  const removeAccount = (accountID: string): void => {
-    const filteredAccountList = props.accountList.filter((account) => {
-      return account.id !== accountID;
-    });
-    props.setAccountList(filteredAccountList);
+  const createContractAccount = (value: string): void => {
+    const newContractAccount: ContractAccount = {
+      id: uuidv4(),
+      value: value,
+    };
+    const newSettings: Setting = JSON.parse(JSON.stringify(settings));
+    newSettings.account.contractAccounts.push(newContractAccount);
+    setSettings(newSettings);
   };
 
-  const onSubmitHandler = () => {
-    // form can not be empty
-    if (
-      accountValueForm !== undefined &&
-      accountValueForm !== null &&
-      accountValueForm !== ""
-    ) {
-      props.setAccountList((accountList) => [
-        ...accountList,
-        createNewAccount(),
-      ]);
-      setAccountValueForm("");
-    }
+  const createBinanceAccount = (value: string): void => {
+    const newBinanceAccount: BinanceAccount = {
+      id: uuidv4(),
+      value: value,
+    };
+    const newSettings: Setting = JSON.parse(JSON.stringify(settings));
+    newSettings.account.binanceAccounts.push(newBinanceAccount);
+    setSettings(newSettings);
   };
 
-  useEffect(() => {
-    // set local 'accountList' from prop
-    props.setAccountList(props.accountList);
-  });
+  const createKucoinAccount = (value: string, secret: string): void => {
+    const newKucoinAccount: KucoinAccount = {
+      id: uuidv4(),
+      value: value,
+      secret: secret,
+    };
+    const newSettings: Setting = JSON.parse(JSON.stringify(settings));
+    newSettings.account.kucoinAccounts.push(newKucoinAccount);
+    setSettings(newSettings);
+  };
+
+  // removeAccounts methods
+  const removeEthAccount = (accountID: string): void => {
+    const filteredEthAccounts = settings.account.ethAccounts.filter(
+      (ethAccount) => {
+        return ethAccount.id !== accountID;
+      }
+    );
+    const newSettings: Setting = JSON.parse(JSON.stringify(settings));
+    newSettings.account.ethAccounts = filteredEthAccounts;
+    setSettings(newSettings);
+  };
+
+  const removeContractAccount = (accountID: string): void => {
+    const filteredContarctAccounts = settings.account.contractAccounts.filter(
+      (contractAccount) => {
+        return contractAccount.id !== accountID;
+      }
+    );
+    const newSettings: Setting = JSON.parse(JSON.stringify(settings));
+    newSettings.account.contractAccounts = filteredContarctAccounts;
+    setSettings(newSettings);
+  };
+
+  const removeBinanceAccount = (accountID: string): void => {
+    const filteredBinanceAccounts = settings.account.binanceAccounts.filter(
+      (binanceAccount) => {
+        return binanceAccount.id !== accountID;
+      }
+    );
+    const newSettings: Setting = JSON.parse(JSON.stringify(settings));
+    newSettings.account.binanceAccounts = filteredBinanceAccounts;
+    setSettings(newSettings);
+  };
+
+  const removeKucoinAccount = (accountID: string): void => {
+    const filteredKucoinAccounts = settings.account.kucoinAccounts.filter(
+      (kucoinAccount) => {
+        return kucoinAccount.id !== accountID;
+      }
+    );
+    const newSettings: Setting = JSON.parse(JSON.stringify(settings));
+    newSettings.account.kucoinAccounts = filteredKucoinAccounts;
+    setSettings(newSettings);
+  };
 
   return (
     <div>
@@ -93,65 +139,34 @@ const SettingsComp = (props: {
               ></button>
             </div>
             <div className={`modal-body ${styles.modalBodyPadding}`}>
-              <div className="container ps-0 pe-0">
-                <div className="row">
-                  <div className="col-6">
-                    <select
-                      name="accountType"
-                      id="accountType"
-                      className="form-select"
-                      onChange={(formEvent) => {
-                        setAccountTypeForm(
-                          formEvent.target.options.selectedIndex
-                        );
-                      }}
-                    >
-                      <option value={accountType.Eth}>
-                        ETH Account Address
-                      </option>
-                      <option value={accountType.Contract}>
-                        ETH Contract Address
-                      </option>
-                      <option value={accountType.Binance}>
-                        Binance API Key
-                      </option>
-                      <option value={accountType.Kucoin}>Kucoin API Key</option>
-                    </select>
-                  </div>
-                  <div className="col-4">
-                    <input
-                      type="text"
-                      className="form-control"
-                      value={accountValueForm}
-                      onChange={(formEvent) => {
-                        setAccountValueForm(formEvent.target.value);
-                      }}
-                    />
-                  </div>
-                  <div className="col-2">
-                    <button
-                      className="btn btn-success"
-                      onClick={() => {
-                        onSubmitHandler();
-                      }}
-                    >
-                      <i className="bi bi-plus"></i>
-                    </button>
-                  </div>
-                </div>
-                <div className="row pt-4">
-                  <div className="col">
-                    {props.accountList.length === 0
-                      ? emptyAccountList
-                      : props.accountList.map((account) => (
-                          <AccountComp
-                            account={account}
-                            key={account.id}
-                            removeHandler={removeAccount}
-                          />
-                        ))}
-                  </div>
-                </div>
+              <div
+                className="accordion accordion-flush"
+                id="accordionFlushAccounts"
+              >
+                <AccountAccordionComp
+                  accordionAccountType={accountType.EthWallet}
+                  accounts={settings.account.ethAccounts}
+                  newAccountHandler={createEthAccount}
+                  removeHandler={removeEthAccount}
+                />
+                <AccountAccordionComp
+                  accordionAccountType={accountType.Contract}
+                  accounts={settings.account.contractAccounts}
+                  newAccountHandler={createContractAccount}
+                  removeHandler={removeContractAccount}
+                />
+                <AccountAccordionComp
+                  accordionAccountType={accountType.Binance}
+                  accounts={settings.account.binanceAccounts}
+                  newAccountHandler={createBinanceAccount}
+                  removeHandler={removeBinanceAccount}
+                />
+                <AccountAccordionComp
+                  accordionAccountType={accountType.Kucoin}
+                  accounts={settings.account.kucoinAccounts}
+                  newAccountHandler={createKucoinAccount}
+                  removeHandler={removeKucoinAccount}
+                />
               </div>
             </div>
             <div className="modal-footer">
@@ -166,10 +181,10 @@ const SettingsComp = (props: {
                 type="button"
                 className="btn btn-primary"
                 onClick={() => {
-                  saveAccountListToLS(props.accountList);
+                  saveAccounts();
                 }}
               >
-                Save changes
+                Save Changes
               </button>
             </div>
           </div>

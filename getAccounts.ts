@@ -1,5 +1,6 @@
 import { CryptocurrencyData } from "./models/CryptocurrencyData";
-import { Account, accountType, EthAccount, Token } from "./models/Account";
+import { EthAccount, ContractAccount, Token } from "./models/Account";
+import { ERC20 } from "./models/ContractABI";
 // web3
 import Web3 from "web3";
 const web3 = new Web3(process.env.ethNodeURL);
@@ -18,67 +19,62 @@ export const fetchCryptoData = async (cryptoID: string) => {
   }
 };
 
-
 // gets the balance of every ETH account
-export const getEthAccounts = async (
-  accountList: Account[]
+export const getPopulatedEthAccounts = async (
+  ethAccounts: EthAccount[],
+  contractAccounts: ContractAccount[]
 ): Promise<EthAccount[]> => {
   try {
-    const ethAccountList: EthAccount[] = [];
-    const ethAdressList = getEthAddresses(accountList);
+    const populatedEthAccounts: EthAccount[] = [];
     // await doesn't work with forEach
-    for (const ethAddress of ethAdressList) {
-      const ethAccount: EthAccount = {
-        address: ethAddress.value,
-        balance: await getEthAddressBalance(ethAddress),
-        Tokens: await getTokenBalances(ethAddress, getContracts(accountList)),
+    for (const ethAccount of ethAccounts) {
+      const populatedEthAccount: EthAccount = {
+        value: ethAccount.value,
+        balance: await getEthAddressBalance(ethAccount.value),
+        tokens: await getTokenBalances(ethAccount.value, contractAccounts),
+        id: ethAccount.id,
       };
-      ethAccountList.push(ethAccount);
+      populatedEthAccounts.push(populatedEthAccount);
     }
-    return ethAccountList;
+    return populatedEthAccounts;
   } catch (error) {
     console.error(error);
   }
 };
 
-// filters 'accountList' for contract addresses
-const getContracts = (accountList: Account[]) => {
-  const contracts: Account[] = [];
-  for (const account of accountList) {
-    if (account.type === accountType.Contract) contracts.push(account);
-  }
-  return contracts;
-};
-
-// filters 'accountList' for ETH addresses
-const getEthAddresses = (accountList: Account[]) => {
-  const ethAddresses: Account[] = [];
-  for (const account of accountList) {
-    if (account.type === accountType.Eth) ethAddresses.push(account);
-  }
-  return ethAddresses;
-};
+// TODO: getPopulated_Exchange_Accounts()
 
 // get balance of an eth address
-const getEthAddressBalance = async (ethAccount: Account) => {
-  const balanceInWei = await web3.eth.getBalance(ethAccount.value);
+const getEthAddressBalance = async (ethAccountAddress: string) => {
+  const balanceInWei = await web3.eth.getBalance(ethAccountAddress);
   const balance = parseFloat(web3.utils.fromWei(balanceInWei));
   return balance;
 };
 
 // get token balances of an eth address
-const getTokenBalances = async (ethAccount: Account, contracts: Account[]) => {
+const getTokenBalances = async (
+  ethAccountAddress: string,
+  contracts: ContractAccount[]
+) => {
   try {
     const tokens: Token[] = [];
     for (const contract of contracts) {
+      // query token info
+      const contractInstance = new web3.eth.Contract(ERC20, contract.value);
+      const symbol: string = await contractInstance.methods.symbol();
+      const balance: number = await contractInstance.methods.balanceOf(
+        ethAccountAddress
+      );
+      const decimals: number = await contractInstance.methods.decimal();
       const token: Token = {
-        symbol: '',
-        balance: null,
+        symbol: symbol,
+        balance: balance / 10 ** decimals,
+        decimals: decimals,
       };
       tokens.push(token);
     }
     return tokens;
   } catch (error) {
-    console.error(error)
+    console.error(error);
   }
 };
