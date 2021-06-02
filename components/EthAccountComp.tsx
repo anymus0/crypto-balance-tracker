@@ -17,13 +17,14 @@ const EthAccountComp = (props: { account: EthAccount; ethPrice: number }) => {
           <p className="card-text">
             {(props.ethPrice * props.account.balance).toFixed(2)}$
           </p>
-          {props.account.tokens.length > 0 && (
-            <ul className="list-group">
-              {props.account.tokens.map((token, index) => (
-                <TokenComp token={token} key={index} />
-              ))}
-            </ul>
-          )}
+          {props.account.tokens !== undefined &&
+            props.account.tokens.length > 0 && (
+              <ul className="list-group">
+                {props.account.tokens.map((token, index) => (
+                  <TokenComp token={token} key={index} />
+                ))}
+              </ul>
+            )}
         </div>
       </div>
     </div>

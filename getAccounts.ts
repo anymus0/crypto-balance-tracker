@@ -61,11 +61,11 @@ const getTokenBalances = async (
     for (const contract of contracts) {
       // query token info
       const contractInstance = new web3.eth.Contract(ERC20, contract.value);
-      const symbol: string = await contractInstance.methods.symbol();
+      const symbol: string = await contractInstance.methods.symbol().call();
       const balance: number = await contractInstance.methods.balanceOf(
         ethAccountAddress
-      );
-      const decimals: number = await contractInstance.methods.decimal();
+      ).call();
+      const decimals: number = await contractInstance.methods.decimals().call();
       const token: Token = {
         symbol: symbol,
         balance: balance / 10 ** decimals,
