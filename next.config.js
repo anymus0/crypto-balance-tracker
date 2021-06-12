@@ -1,6 +1,7 @@
-const clientEnvVariables = require('./clientEnv')
+const clientEnvVariables = require("./clientEnv");
+const withPWA = require("next-pwa");
 
-const config = {
+module.exports = withPWA({
   future: {
     webpack5: true,
   },
@@ -10,6 +11,7 @@ const config = {
     kucoinSecret: clientEnvVariables.kucoin.secret,
     kucoinPasshrase: clientEnvVariables.kucoin.passhrase,
   },
-}
-
-module.exports = config
+  pwa: {
+    dest: "public",
+  },
+});

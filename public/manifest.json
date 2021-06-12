@@ -1,0 +1,38 @@
+{
+  "theme_color": "#2d4452",
+  "background_color": "rgb(35, 45, 51)",
+  "display": "minimal-ui",
+  "scope": "/",
+  "start_url": "/",
+  "name": "Lagoon Balance Tracker",
+  "short_name": "LBTracker",
+  "description": "Tracks crypto balances through blockchains and exchanges.",
+  "icons": [
+    {
+      "src": "/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-384x384.png",
+      "sizes": "384x384",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}

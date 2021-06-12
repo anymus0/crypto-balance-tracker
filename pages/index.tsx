@@ -94,6 +94,11 @@ const Home = () => {
       <Head>
         <title>Crypto Balance Aggregator</title>
         <link rel="icon" href="/favicon.ico" />
+        <link href="favicon.ico" rel="shortcut icon" type="image/x-icon" />
+        <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
+
+        <link href="/manifest.json" rel="manifest" />
+        <meta name="theme-color" content="#2d4452" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <script
           src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js"
