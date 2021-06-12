@@ -6,10 +6,7 @@ module.exports = withPWA({
     webpack5: true,
   },
   env: {
-    ethNodeURL: clientEnvVariables.ethNodeURL,
-    kucoinKey: clientEnvVariables.kucoin.key,
-    kucoinSecret: clientEnvVariables.kucoin.secret,
-    kucoinPasshrase: clientEnvVariables.kucoin.passhrase,
+    ethNodeURL: clientEnvVariables.ethNodeURL
   },
   pwa: {
     dest: "public",
