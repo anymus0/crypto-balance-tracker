@@ -58,7 +58,6 @@ export const getPopulatedEthAccounts = async (
     for (const ethAccount of ethAccounts) {
       const populatedEthAccount: EthAccount = {
         value: ethAccount.value,
-        balance: 0,
         tokens: await getTokenBalances(ethAccount.value, contractAccounts),
         id: ethAccount.id,
       };

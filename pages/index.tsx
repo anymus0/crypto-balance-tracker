@@ -7,10 +7,11 @@ import React, {
   useEffect,
   Context,
 } from "react";
-import { getPopulatedEthAccounts, fetchCryptoData } from "../getAccounts";
+import { getPopulatedEthAccounts } from "../getAccounts";
 // Styles/Comps
 import SettingsComp from "../components/SettingsComp";
 import EthAccountComp from "../components/EthAccountComp";
+import NetWorthComp from "../components/NetWorthComp";
 import styles from "../styles/Home.module.scss";
 // models
 import { Setting, defaultSettings } from "./../models/Setting";
@@ -62,7 +63,7 @@ const Home = () => {
   }, [settings]);
 
   useEffect(() => {
-    // refresh ethPrice & ethAccountBalances every 5 seconds
+    // refresh accounts every 5 seconds
     let refresherID = null;
     refresherID = setInterval(async () => {
       try {
@@ -119,6 +120,11 @@ const Home = () => {
       </header>
       <main>
         <div className="container pt-5">
+          <div className={`row ${styles.section}`}>
+            <div className="col">
+              <NetWorthComp ethAccounts={account.ethAccounts}></NetWorthComp>
+            </div>
+          </div>
           <div className={`row ${styles.section}`}>
             {account.ethAccounts.length > 0 &&
               account.ethAccounts.map((ethAccount) => (

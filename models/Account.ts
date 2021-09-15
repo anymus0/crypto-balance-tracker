@@ -13,7 +13,6 @@ export interface BinanceAccount {
 
 export interface EthAccount {
   value: string;
-  balance: number;
   tokens: Token[];
   id: string;
 };
