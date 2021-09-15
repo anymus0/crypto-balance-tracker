@@ -48,9 +48,7 @@ const Home = () => {
   };
 
   // only runs once onMount
-  // set accounts
   useEffect(() => {
-    // get 'accountList' from localStorage if it was saved before
     if (getSettingsFromLS() !== null && window) {
       setSettings(getSettingsFromLS());
       getPopulatedAccounts(settings.account).then((account) => {

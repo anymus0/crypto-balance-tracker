@@ -1,5 +1,5 @@
 import { CryptocurrencyData } from "./models/CryptocurrencyData";
-import { EthAccount, ContractAccount, Token } from "./models/Account";
+import { EthAccount, ContractAccount, Token, Account, BinanceAccount } from "./models/Account";
 import { ERC20 } from "./models/ContractABI";
 // web3
 import Web3 from "web3";
@@ -78,3 +78,11 @@ const getTokenBalances = async (
     console.error(error);
   }
 };
+
+
+// Binance CEX
+const getPopulatedBinanceAccounts = async (binanceAccounts: BinanceAccount[]): Promise<BinanceAccount[]> => {
+  
+
+  return [];
+}

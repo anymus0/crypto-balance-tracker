@@ -3,9 +3,9 @@ import Head from 'next/head'
 export default () => (
   <>
     <Head>
-      <title>next-pwa example</title>
+      <title>Balance Tracker is offline</title>
     </Head>
-    <h1>This is offline fallback page</h1>
-    <h2>When offline, any page route will fallback to this page</h2>
+    <h1>Could not connect to network</h1>
+    <h2>Please check your internet connection</h2>
   </>
 )
