@@ -28,9 +28,6 @@ const Home = () => {
   const [account, setAccount]: [Account, Dispatch<SetStateAction<Account>>] =
     useState(defaultSettings.account);
 
-  const [ethPrice, setEthPrice]: [number, Dispatch<SetStateAction<number>>] =
-    useState(0);
-
   const getSettingsFromLS = (): Setting => {
     const settings: Setting = JSON.parse(localStorage.getItem("settings"));
     return settings;
@@ -54,9 +51,6 @@ const Home = () => {
       getPopulatedAccounts(settings.account).then((account) => {
         setAccount(account);
       });
-      fetchCryptoData("ethereum").then((ethereumData) => {
-        setEthPrice(ethereumData.current_price);
-      });
     }
   }, []);
 
@@ -75,8 +69,6 @@ const Home = () => {
         getPopulatedAccounts(settings.account).then((account) => {
           setAccount(account);
         });
-        const ethereumData = await fetchCryptoData("ethereum");
-        setEthPrice(ethereumData.current_price);
       } catch (error) {
         console.error(error);
       }
@@ -134,7 +126,7 @@ const Home = () => {
                   className="col-xl-3 col-lg-4 col-md-6 col-sm-12 mt-3"
                   key={ethAccount.id}
                 >
-                  <EthAccountComp account={ethAccount} ethPrice={ethPrice} />
+                  <EthAccountComp account={ethAccount} />
                 </div>
               ))}
           </div>

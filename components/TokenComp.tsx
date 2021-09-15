@@ -7,6 +7,9 @@ const TokenComp = (props: { token: Token }) => {
       {props.token.symbol}
       <span className="badge bg-primary-light rounded-pill">
         {props.token.balance.toFixed(4)}
+        <br />{" "}
+        {(props.token.balance * props.token.tokenData.current_price).toFixed(2)}
+        $
       </span>
     </li>
   );

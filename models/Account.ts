@@ -1,3 +1,5 @@
+import { CryptocurrencyData } from './CryptocurrencyData';
+
 export interface KucoinAccount {
   value: string;
   secret: string;
@@ -17,9 +19,11 @@ export interface EthAccount {
 };
 
 export interface Token {
+  name: string;
   symbol: string;
   balance: number;
   decimals: number;
+  tokenData: CryptocurrencyData;
 };
 
 export interface ContractAccount {

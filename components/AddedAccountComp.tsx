@@ -1,5 +1,5 @@
 // models
-import { EthAccount, ContractAccount, BinanceAccount, KucoinAccount } from './../models/Account';
+import { EthAccount, ContractAccount, BinanceAccount, KucoinAccount } from '../models/Account';
 
 // component
 const AccountComp = (props: {

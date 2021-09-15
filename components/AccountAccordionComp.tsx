@@ -1,5 +1,5 @@
 import React, { Dispatch, useState, SetStateAction } from "react";
-import AccountComp from "./AccountComp";
+import AddedAccountComp from "./AddedAccountComp";
 // models
 import {
   EthAccount,
@@ -114,7 +114,7 @@ const AccountAccordionComp = (props: {
             <div className="row">
               <div className="col">
                 {props.accounts.map((account) => (
-                  <AccountComp
+                  <AddedAccountComp
                     account={account}
                     key={account.id}
                     removeHandler={props.removeHandler}
