@@ -26,7 +26,6 @@ const SettingsComp = () => {
     const newEthAccount: EthAccount = {
       id: uuidv4(),
       value: value,
-      balance: 0,
       tokens: [],
     };
     const newSettings: Setting = JSON.parse(JSON.stringify(settings));
