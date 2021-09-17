@@ -1,7 +1,7 @@
 {
   "theme_color": "#2d4452",
   "background_color": "rgb(35, 45, 51)",
-  "display": "minimal-ui",
+  "display": "standalone",
   "scope": "/",
   "start_url": "/",
   "name": "Lagoon Balance Tracker",
