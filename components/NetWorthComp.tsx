@@ -34,12 +34,12 @@ const getEthNetWorthWithoutOHM = (ethAccounts: EthAccount[]) => {
 const NetWorthComp = (props: { ethAccounts: EthAccount[] }) => {
   return (
     <div className="row">
-      <div className="col-3">
+      <div className="col-lg-3 col-md-12">
         {getEthNetWorth(props.ethAccounts) > 0 && (
           <p>Net Worth: {getEthNetWorth(props.ethAccounts)}$</p>
         )}
       </div>
-      <div className="col">
+      <div className="col-lg-3 col-md-12">
         {getEthNetWorthWithoutOHM(props.ethAccounts) > 0 && (
           <p>
             Net Worth Without OHM: {getEthNetWorthWithoutOHM(props.ethAccounts)}
