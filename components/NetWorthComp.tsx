@@ -1,6 +1,7 @@
 import { EthAccount } from "./../models/Account";
+import { formatCurrency } from "./../formatCurrency";
 
-// net worth aggregate fucntion
+// net worth aggregate function
 const getEthNetWorth = (ethAccounts: EthAccount[]) => {
   let netWorth = 0;
   for (let i = 0; i < ethAccounts.length; i++) {
@@ -36,14 +37,13 @@ const NetWorthComp = (props: { ethAccounts: EthAccount[] }) => {
     <div className="row">
       <div className="col-lg-3 col-md-12">
         {getEthNetWorth(props.ethAccounts) > 0 && (
-          <p>Net Worth: {getEthNetWorth(props.ethAccounts)}$</p>
+          <p>Net Worth: {formatCurrency(getEthNetWorth(props.ethAccounts))}</p>
         )}
       </div>
       <div className="col-lg-3 col-md-12">
         {getEthNetWorthWithoutOHM(props.ethAccounts) > 0 && (
           <p>
-            Net Worth Without OHM: {getEthNetWorthWithoutOHM(props.ethAccounts)}
-            $
+            Net Worth w/o OHM: {formatCurrency(getEthNetWorthWithoutOHM(props.ethAccounts))}
           </p>
         )}
       </div>
