@@ -33,6 +33,8 @@ $accordion-button-active-bg: colors.$secondary-dark;
 
 // badge
 $badge-color: colors.$grey-blue;
+$badge-padding-y: 0.5rem;
+$badge-padding-x: 1rem;
 
 
 @import '../node_modules/bootstrap/scss/bootstrap';
