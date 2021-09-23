@@ -12,6 +12,7 @@ import { getPopulatedEthAccounts } from "../getAccounts";
 import SettingsComp from "../components/SettingsComp";
 import EthAccountComp from "../components/EthAccountComp";
 import NetWorthComp from "../components/NetWorthComp";
+import Loader from "react-loader-spinner";
 import styles from "../styles/Home.module.scss";
 // models
 import { Setting, defaultSettings } from "./../models/Setting";
@@ -126,6 +127,18 @@ const Home = () => {
             </div>
           </div>
           <div className={`row ${styles.section}`}>
+            {account.ethAccounts.length === 0 && (
+              <div>
+                <p>Loading...</p>
+                <Loader
+                  type="Puff"
+                  color="#6BF19F"
+                  height={100}
+                  width={100}
+                  timeout={6000}
+                />
+              </div>
+            )}
             {account.ethAccounts.length > 0 &&
               account.ethAccounts.map((ethAccount) => (
                 <div
