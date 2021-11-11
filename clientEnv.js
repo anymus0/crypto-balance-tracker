@@ -1,4 +1,4 @@
-const ethNodeURL = 'https://lagoon2.lagooncompany.xyz/rpc';
+const ethNodeURL = 'https://api.avax.network/ext/bc/C/rpc';
 
 module.exports = {
   ethNodeURL: ethNodeURL

@@ -40,13 +40,13 @@ const NetWorthComp = (props: { ethAccounts: EthAccount[] }) => {
           <p>Net Worth: {formatCurrency(getEthNetWorth(props.ethAccounts))}</p>
         )}
       </div>
-      <div className="col-lg-3 col-md-12">
+      {/* <div className="col-lg-3 col-md-12">
         {getEthNetWorthWithoutOHM(props.ethAccounts) > 0 && (
           <p>
             Net Worth w/o OHM: {formatCurrency(getEthNetWorthWithoutOHM(props.ethAccounts))}
           </p>
         )}
-      </div>
+      </div> */}
     </div>
   );
 };

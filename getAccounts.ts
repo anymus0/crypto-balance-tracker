@@ -13,6 +13,11 @@ const web3 = new Web3(process.env.ethNodeURL);
 
 export const fetchCryptoData = async (name: string, symbol: string) => {
   try {
+    // handle rename of TIME to wonderland (coingecko compatibility issue)
+    if (name === "Time") {
+      name = "Wonderland";
+    }
+    
     const coingeckoAPI = "https://api.coingecko.com/api/v3";
     const fetchURLByName = `${coingeckoAPI}/coins/markets?vs_currency=usd&ids=${name.toLowerCase()}`;
     const resByName = await fetch(fetchURLByName);
@@ -33,11 +38,19 @@ export const fetchCryptoData = async (name: string, symbol: string) => {
     }
 
     // in case of sOHM fetch the OHM token
-    if (symbol === 'sOHM') {
-      const fetchOHM = `${coingeckoAPI}/coins/markets?vs_currency=usd&ids=olympus`;
+    if (symbol === "sOHM") {
+      const fetchOHM = `${coingeckoAPI}/coins/markets?vs_currency=usd&ids=${symbol.toLowerCase()}`;
       const resByName = await fetch(fetchOHM);
       const dataOHM: CryptocurrencyData[] = await resByName.json();
       data = dataOHM;
+    }
+
+    // in case of MEMO fetch the Time token
+    if (symbol === "MEMO") {
+      const fetchMEMO = `${coingeckoAPI}/coins/markets?vs_currency=usd&ids=wonderland`;
+      const resByName = await fetch(fetchMEMO);
+      const dataTIME: CryptocurrencyData[] = await resByName.json();
+      data = dataTIME;
     }
 
     const cryptoData: CryptocurrencyData = data[0];
@@ -61,13 +74,13 @@ export const getPopulatedEthAccounts = async (
         tokens: await getTokenBalances(ethAccount.value, contractAccounts),
         id: ethAccount.id,
       };
-      // add ETH as the 1st token in the tokens array
+      // add AVAX as the 1st token in the tokens array
       const ethToken: Token = {
         balance: await getEthAddressBalance(ethAccount.value),
-        name: 'ethereum',
-        symbol: 'ETH',
+        name: "avalanche-2",
+        symbol: "AVAX",
         decimals: 18,
-        tokenData: await fetchCryptoData('ethereum', 'ETH')
+        tokenData: await fetchCryptoData("avalanche-2", "AVAX"),
       };
       populatedEthAccount.tokens.unshift(ethToken);
       populatedEthAccounts.push(populatedEthAccount);
@@ -89,12 +102,14 @@ const getEthAddressBalance = async (ethAccountAddress: string) => {
 
 // get unclaimed strong reward from strong proxy contract
 const getUnclaimedStrongReward = async (ethAccountAddress: string) => {
-  const strongProxyContract = '0xFbdDaDD80fe7bda00B901FbAf73803F2238Ae655'
+  const strongProxyContract = "0xFbdDaDD80fe7bda00B901FbAf73803F2238Ae655";
   const contractInstance = new web3.eth.Contract(STRONG, strongProxyContract);
   const currentBlock = await web3.eth.getBlockNumber();
-  const rawRewards = await contractInstance.methods.getRewardAll(ethAccountAddress, currentBlock).call();
-  return (rawRewards * (10 ** -18));
-}
+  const rawRewards = await contractInstance.methods
+    .getRewardAll(ethAccountAddress, currentBlock)
+    .call();
+  return rawRewards * 10 ** -18;
+};
 
 // get token balances of an eth address
 const getTokenBalances = async (
@@ -119,7 +134,7 @@ const getTokenBalances = async (
       };
 
       // if token is STRONG, then add the unclaimed tokens from the contract
-      if (symbol === 'STRONG') {
+      if (symbol === "STRONG") {
         token.balance += await getUnclaimedStrongReward(ethAccountAddress);
       }
 
