@@ -17,6 +17,10 @@ export const fetchCryptoData = async (name: string, symbol: string) => {
     if (name === "Time") {
       name = "Wonderland";
     }
+    // handle rename of wsOHM to wrapped-staked-olympus (coingecko compatibility issue)
+    if (symbol === "wsOHM") {
+      name = "wrapped-staked-olympus";
+    }
     
     const coingeckoAPI = "https://api.coingecko.com/api/v3";
     const fetchURLByName = `${coingeckoAPI}/coins/markets?vs_currency=usd&ids=${name.toLowerCase()}`;
