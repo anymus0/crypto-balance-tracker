@@ -2,6 +2,7 @@ import { Account } from './Account';
 
 export interface Setting {
   account: Account;
+  currency: string;
 };
 
 export const defaultSettings: Setting = {
@@ -10,5 +11,6 @@ export const defaultSettings: Setting = {
     ethAccounts: [],
     binanceAccounts: [],
     contractAccounts: []
-  }
+  },
+  currency: 'USD'
 };

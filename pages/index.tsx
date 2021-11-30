@@ -9,7 +9,7 @@ import React, {
 } from "react";
 import { getPopulatedEthAccounts } from "../getAccounts";
 // Styles/Comps
-import SettingsComp from "../components/SettingsComp";
+import SettingsComp from "../components/settings/SettingsComp";
 import EthAccountComp from "../components/EthAccountComp";
 import NetWorthComp from "../components/NetWorthComp";
 import Loader from "react-loader-spinner";

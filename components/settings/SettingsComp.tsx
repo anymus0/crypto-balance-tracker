@@ -1,16 +1,21 @@
 import { v4 as uuidv4 } from "uuid";
 import React, { useContext } from "react";
-import styles from "../styles/Settings.module.scss";
+import styles from "./../../styles/Settings.module.scss";
+// models
+import { Setting } from "../../models/Setting";
 import {
   EthAccount,
   ContractAccount,
   accountType,
   BinanceAccount,
   KucoinAccount,
-} from "../models/Account";
+} from "../../models/Account";
+// components
 import AccountAccordionComp from "./AccountAccordionComp";
-import { SettingsContext } from "./../pages/index";
-import { Setting } from "../models/Setting";
+import CurrencyComp from "./CurrencyComp";
+// settings context
+import { SettingsContext } from "../../pages/index";
+
 
 // component
 const SettingsComp = () => {
@@ -20,6 +25,13 @@ const SettingsComp = () => {
   const saveSettings = (): void => {
     localStorage.setItem("settings", JSON.stringify(settings));
   };
+
+  // currency
+  const setCurrencyHandler = (newCurrency: string) => {
+    const newSettings: Setting = JSON.parse(JSON.stringify(settings));
+    newSettings.currency = newCurrency;
+    setSettings(newSettings);
+  }
 
   // createAccount methods
   const createEthAccount = (value: string): void => {
@@ -138,22 +150,33 @@ const SettingsComp = () => {
               ></button>
             </div>
             <div className={`modal-body ${styles.modalBodyPadding}`}>
-              <div
-                className="accordion accordion-flush"
-                id="accordionFlushAccounts"
-              >
-                <AccountAccordionComp
-                  accordionAccountType={accountType.EthWallet}
-                  accounts={settings.account.ethAccounts}
-                  newAccountHandler={createEthAccount}
-                  removeHandler={removeEthAccount}
-                />
-                <AccountAccordionComp
-                  accordionAccountType={accountType.Contract}
-                  accounts={settings.account.contractAccounts}
-                  newAccountHandler={createContractAccount}
-                  removeHandler={removeContractAccount}
-                />
+              <div className="container-fluid">
+                <div className="row">
+                  <div className="col">
+                    <div
+                      className="accordion accordion-flush"
+                      id="accordionFlushAccounts"
+                    >
+                      <AccountAccordionComp
+                        accordionAccountType={accountType.EthWallet}
+                        accounts={settings.account.ethAccounts}
+                        newAccountHandler={createEthAccount}
+                        removeHandler={removeEthAccount}
+                      />
+                      <AccountAccordionComp
+                        accordionAccountType={accountType.Contract}
+                        accounts={settings.account.contractAccounts}
+                        newAccountHandler={createContractAccount}
+                        removeHandler={removeContractAccount}
+                      />
+                    </div>
+                  </div>
+                </div>
+                <div className="row pt-3">
+                  <div className="col">
+                    <CurrencyComp currency={settings.currency} setCurrencyHandler={setCurrencyHandler} />
+                  </div>
+                </div>
               </div>
             </div>
             <div className="modal-footer">
