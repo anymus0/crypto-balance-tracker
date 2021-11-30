@@ -17,7 +17,7 @@ const SettingsComp = () => {
   // use settings context
   const { settings, setSettings } = useContext(SettingsContext);
   // TODO: should save settings somehow
-  const saveAccounts = (): void => {
+  const saveSettings = (): void => {
     localStorage.setItem("settings", JSON.stringify(settings));
   };
 
@@ -154,18 +154,6 @@ const SettingsComp = () => {
                   newAccountHandler={createContractAccount}
                   removeHandler={removeContractAccount}
                 />
-                <AccountAccordionComp
-                  accordionAccountType={accountType.Binance}
-                  accounts={settings.account.binanceAccounts}
-                  newAccountHandler={createBinanceAccount}
-                  removeHandler={removeBinanceAccount}
-                />
-                <AccountAccordionComp
-                  accordionAccountType={accountType.Kucoin}
-                  accounts={settings.account.kucoinAccounts}
-                  newAccountHandler={createKucoinAccount}
-                  removeHandler={removeKucoinAccount}
-                />
               </div>
             </div>
             <div className="modal-footer">
@@ -180,7 +168,7 @@ const SettingsComp = () => {
                 type="button"
                 className="btn btn-primary"
                 onClick={() => {
-                  saveAccounts();
+                  saveSettings();
                 }}
               >
                 Save Changes
