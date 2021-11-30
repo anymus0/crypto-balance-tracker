@@ -40,7 +40,8 @@ const Home = () => {
     // eth accs
     updatedAccount.ethAccounts = await getPopulatedEthAccounts(
       updatedAccount.ethAccounts,
-      updatedAccount.contractAccounts
+      updatedAccount.contractAccounts,
+      settings.currency
     );
     // TODO: extend with exchange accs 'getPopulated_Exchange_Accounts()'
     return updatedAccount;
@@ -145,7 +146,7 @@ const Home = () => {
                   className="col-xl-3 col-lg-4 col-md-6 col-sm-12 mt-3"
                   key={ethAccount.id}
                 >
-                  <EthAccountComp account={ethAccount} />
+                  <EthAccountComp account={ethAccount} currency={settings.currency} />
                 </div>
               ))}
           </div>

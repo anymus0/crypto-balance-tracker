@@ -1,9 +1,10 @@
 import { EthAccount } from "../models/Account";
+import { Setting } from "./../models/Setting"
 import styles from "../styles/EthAccountComp.module.scss";
 import TokenComp from "./TokenComp";
 
 // component
-const EthAccountComp = (props: { account: EthAccount }) => {
+const EthAccountComp = (props: { account: EthAccount, currency: string }) => {
   return (
     <div>
       <div className={`card ${styles.accountCard}`}>
@@ -15,7 +16,7 @@ const EthAccountComp = (props: { account: EthAccount }) => {
             props.account.tokens.length > 0 && (
               <ul className="list-group">
                 {props.account.tokens.map((token, index) => (
-                  <TokenComp token={token} key={index} />
+                  <TokenComp token={token} key={index} currency={props.currency} />
                 ))}
               </ul>
             )}
