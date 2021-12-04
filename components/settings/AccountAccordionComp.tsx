@@ -7,7 +7,7 @@ import {
   BinanceAccount,
   KucoinAccount,
   accountType,
-} from "./../models/Account";
+} from "./../../models/Account";
 
 // component
 const AccountAccordionComp = (props: {

@@ -11,7 +11,7 @@ import { ERC20, STRONG } from "./models/ContractABI";
 import Web3 from "web3";
 const web3 = new Web3(process.env.ethNodeURL);
 
-export const fetchCryptoData = async (name: string, symbol: string) => {
+export const fetchCryptoData = async (name: string, symbol: string, currency: string) => {
   try {
     // handle rename of TIME to wonderland (coingecko compatibility issue)
     if (name === "Time") {
@@ -23,7 +23,7 @@ export const fetchCryptoData = async (name: string, symbol: string) => {
     }
     
     const coingeckoAPI = "https://api.coingecko.com/api/v3";
-    const fetchURLByName = `${coingeckoAPI}/coins/markets?vs_currency=usd&ids=${name.toLowerCase()}`;
+    const fetchURLByName = `${coingeckoAPI}/coins/markets?vs_currency=${currency}&ids=${name.toLowerCase()}`;
     const resByName = await fetch(fetchURLByName);
     const dataByName: CryptocurrencyData[] = await resByName.json();
     let data = {};
@@ -33,7 +33,7 @@ export const fetchCryptoData = async (name: string, symbol: string) => {
       dataByName === undefined
     ) {
       // if fetching by name returns no data, then try fetching by symbol
-      const fetchURLBySymbol = `${coingeckoAPI}/coins/markets?vs_currency=usd&ids=${symbol.toLowerCase()}`;
+      const fetchURLBySymbol = `${coingeckoAPI}/coins/markets?vs_currency=${currency}&ids=${symbol.toLowerCase()}`;
       const resBySymbol = await fetch(fetchURLBySymbol);
       const dataBySymbol: CryptocurrencyData[] = await resBySymbol.json();
       data = dataBySymbol;
@@ -42,8 +42,8 @@ export const fetchCryptoData = async (name: string, symbol: string) => {
     }
 
     // in case of sOHM fetch the OHM token
-    if (symbol === "sOHM") {
-      const fetchOHM = `${coingeckoAPI}/coins/markets?vs_currency=usd&ids=${symbol.toLowerCase()}`;
+    if (symbol === 'sOHM') {
+      const fetchOHM = `${coingeckoAPI}/coins/markets?vs_currency=${currency}&ids=olympus`;
       const resByName = await fetch(fetchOHM);
       const dataOHM: CryptocurrencyData[] = await resByName.json();
       data = dataOHM;
@@ -51,7 +51,7 @@ export const fetchCryptoData = async (name: string, symbol: string) => {
 
     // in case of MEMO fetch the Time token
     if (symbol === "MEMO") {
-      const fetchMEMO = `${coingeckoAPI}/coins/markets?vs_currency=usd&ids=wonderland`;
+      const fetchMEMO = `${coingeckoAPI}/coins/markets?vs_currency=${currency}&ids=wonderland`;
       const resByName = await fetch(fetchMEMO);
       const dataTIME: CryptocurrencyData[] = await resByName.json();
       data = dataTIME;
@@ -67,7 +67,8 @@ export const fetchCryptoData = async (name: string, symbol: string) => {
 // gets the balance of every ETH account
 export const getPopulatedEthAccounts = async (
   ethAccounts: EthAccount[],
-  contractAccounts: ContractAccount[]
+  contractAccounts: ContractAccount[],
+  currency: string
 ) => {
   try {
     const populatedEthAccounts: EthAccount[] = [];
@@ -75,7 +76,7 @@ export const getPopulatedEthAccounts = async (
     for (const ethAccount of ethAccounts) {
       const populatedEthAccount: EthAccount = {
         value: ethAccount.value,
-        tokens: await getTokenBalances(ethAccount.value, contractAccounts),
+        tokens: await getTokenBalances(ethAccount.value, contractAccounts, currency),
         id: ethAccount.id,
       };
       // add AVAX as the 1st token in the tokens array
@@ -84,7 +85,7 @@ export const getPopulatedEthAccounts = async (
         name: "avalanche-2",
         symbol: "AVAX",
         decimals: 18,
-        tokenData: await fetchCryptoData("avalanche-2", "AVAX"),
+        tokenData: await fetchCryptoData("avalanche-2", "AVAX", currency),
       };
       populatedEthAccount.tokens.unshift(ethToken);
       populatedEthAccounts.push(populatedEthAccount);
@@ -118,7 +119,8 @@ const getUnclaimedStrongReward = async (ethAccountAddress: string) => {
 // get token balances of an eth address
 const getTokenBalances = async (
   ethAccountAddress: string,
-  contracts: ContractAccount[]
+  contracts: ContractAccount[],
+  currency: string
 ) => {
   try {
     const tokens: Token[] = [];
@@ -134,7 +136,7 @@ const getTokenBalances = async (
           (await contractInstance.methods.balanceOf(ethAccountAddress).call()) /
           10 ** (await contractInstance.methods.decimals().call()),
         decimals: await contractInstance.methods.decimals().call(),
-        tokenData: await fetchCryptoData(name, symbol),
+        tokenData: await fetchCryptoData(name, symbol, currency),
       };
 
       // if token is STRONG, then add the unclaimed tokens from the contract

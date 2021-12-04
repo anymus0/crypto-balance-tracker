@@ -1,7 +1,11 @@
-export const formatCurrency = (money: number) => {
-  return new Intl.NumberFormat("en-US", {
-    style: "currency",
-    currency: "USD",
-    minimumFractionDigits: 2,
-  }).format(money);
+export const formatCurrency = (money: number, currency: string) => {
+  try {
+    return new Intl.NumberFormat("hu", {
+      style: "currency",
+      currency: currency,
+      minimumFractionDigits: 2,
+    }).format(money);
+  } catch (error) {
+    console.error(error)
+  }
 };

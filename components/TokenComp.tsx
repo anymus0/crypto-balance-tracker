@@ -3,7 +3,7 @@ import styles from "../styles/TokenComp.module.scss";
 import { formatCurrency } from './../formatCurrency';
 
 // component
-const TokenComp = (props: { token: Token }) => {
+const TokenComp = (props: { token: Token, currency: string }) => {
   return (
     <li className="list-group-item d-flex justify-content-between align-items-center">
       {props.token.symbol}
@@ -11,10 +11,10 @@ const TokenComp = (props: { token: Token }) => {
         {props.token.balance.toFixed(4)}
         <br />
         {formatCurrency(
-          props.token.balance * props.token.tokenData.current_price
+          props.token.balance * props.token.tokenData.current_price, props.currency
         )}
         <br />
-        {`1 = ${formatCurrency(props.token.tokenData.current_price)}`}
+        {`1 = ${formatCurrency(props.token.tokenData.current_price, props.currency)}`}
       </span>
     </li>
   );

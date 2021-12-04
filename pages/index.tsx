@@ -9,7 +9,7 @@ import React, {
 } from "react";
 import { getPopulatedEthAccounts } from "../getAccounts";
 // Styles/Comps
-import SettingsComp from "../components/SettingsComp";
+import SettingsComp from "../components/settings/SettingsComp";
 import EthAccountComp from "../components/EthAccountComp";
 import NetWorthComp from "../components/NetWorthComp";
 import Loader from "react-loader-spinner";
@@ -40,7 +40,8 @@ const Home = () => {
     // eth accs
     updatedAccount.ethAccounts = await getPopulatedEthAccounts(
       updatedAccount.ethAccounts,
-      updatedAccount.contractAccounts
+      updatedAccount.contractAccounts,
+      settings.currency
     );
     // TODO: extend with exchange accs 'getPopulated_Exchange_Accounts()'
     return updatedAccount;
@@ -106,9 +107,6 @@ const Home = () => {
             </div>
           </div>
           <div className={`row ${styles.section}`}>
-            <div className="col">
-              <p>You can add accounts to track in the settings below.</p>
-            </div>
           </div>
           <div className={`row ${styles.section}`}>
             <div className="col">
@@ -123,7 +121,7 @@ const Home = () => {
         <div className="container pt-5">
           <div className={`row ${styles.section}`}>
             <div className="col">
-              <NetWorthComp ethAccounts={account.ethAccounts}></NetWorthComp>
+              <NetWorthComp ethAccounts={account.ethAccounts} currency={settings.currency}></NetWorthComp>
             </div>
           </div>
           <div className={`row ${styles.section}`}>
@@ -145,7 +143,7 @@ const Home = () => {
                   className="col-xl-3 col-lg-4 col-md-6 col-sm-12 mt-3"
                   key={ethAccount.id}
                 >
-                  <EthAccountComp account={ethAccount} />
+                  <EthAccountComp account={ethAccount} currency={settings.currency} />
                 </div>
               ))}
           </div>
