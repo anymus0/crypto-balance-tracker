@@ -7,7 +7,7 @@ const CurrencyComp = (props: { currentCurrency: string, setCurrencyHandler(newCu
         props.setCurrencyHandler(formEvent.target.value);
       }}>
         {currencyList.map(currency => 
-          <option value={currency} selected={currency === props.currentCurrency}>{currency}</option>
+          <option key={currency} value={currency} selected={currency === props.currentCurrency}>{currency}</option>
         )}
       </select>
     </div>
