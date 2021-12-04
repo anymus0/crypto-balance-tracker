@@ -173,7 +173,7 @@ const SettingsComp = () => {
                 </div>
                 <div className="row pt-3">
                   <div className="col">
-                    <CurrencyComp currency={settings.currency} setCurrencyHandler={setCurrencyHandler} />
+                    <CurrencyComp currentCurrency={settings.currency} setCurrencyHandler={setCurrencyHandler} />
                   </div>
                 </div>
               </div>

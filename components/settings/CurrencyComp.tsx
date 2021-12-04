@@ -1,14 +1,14 @@
-const CurrencyComp = (props: { currency: string, setCurrencyHandler(newCurrency: string): void }) => {
+const CurrencyComp = (props: { currentCurrency: string, setCurrencyHandler(newCurrency: string): void }) => {
+  const currencyList: Array<string> = ['USD', 'EUR', 'HUF', 'GBP', 'JPY'];
   return (
     <div>
       <p>Currency</p>
       <select className="form-select" aria-label="Currency selection" onChange={(formEvent) => {
         props.setCurrencyHandler(formEvent.target.value);
       }}>
-        <option value="USD">USD</option>
-        <option value="EUR">EUR</option>
-        <option value="HUF">HUF</option>
-        <option value="GBP">GBP</option>
+        {currencyList.map(currency => 
+          <option value={currency} selected={currency === props.currentCurrency}>{currency}</option>
+        )}
       </select>
     </div>
   );
