@@ -21,7 +21,6 @@ import { SettingsContext } from "../../pages/index";
 const SettingsComp = () => {
   // use settings context
   const { settings, setSettings } = useContext(SettingsContext);
-  // TODO: should save settings somehow
   const saveSettings = (): void => {
     localStorage.setItem("settings", JSON.stringify(settings));
   };
@@ -193,6 +192,7 @@ const SettingsComp = () => {
                 onClick={() => {
                   saveSettings();
                 }}
+                data-bs-dismiss="modal"
               >
                 Save Changes
               </button>
