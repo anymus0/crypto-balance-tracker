@@ -107,9 +107,6 @@ const Home = () => {
             </div>
           </div>
           <div className={`row ${styles.section}`}>
-            <div className="col">
-              <p>You can add accounts to track in the settings below.</p>
-            </div>
           </div>
           <div className={`row ${styles.section}`}>
             <div className="col">
@@ -124,7 +121,7 @@ const Home = () => {
         <div className="container pt-5">
           <div className={`row ${styles.section}`}>
             <div className="col">
-              <NetWorthComp ethAccounts={account.ethAccounts}></NetWorthComp>
+              <NetWorthComp ethAccounts={account.ethAccounts} currency={settings.currency}></NetWorthComp>
             </div>
           </div>
           <div className={`row ${styles.section}`}>

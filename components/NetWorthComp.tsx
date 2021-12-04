@@ -32,18 +32,18 @@ const getEthNetWorthWithoutOHM = (ethAccounts: EthAccount[]) => {
 };
 
 // component
-const NetWorthComp = (props: { ethAccounts: EthAccount[] }) => {
+const NetWorthComp = (props: { ethAccounts: EthAccount[], currency: string }) => {
   return (
     <div className="row">
       <div className="col-lg-3 col-md-12">
         {getEthNetWorth(props.ethAccounts) > 0 && (
-          <p>Net Worth: {formatCurrency(getEthNetWorth(props.ethAccounts))}</p>
+          <p>Net Worth: {formatCurrency(getEthNetWorth(props.ethAccounts), props.currency)}</p>
         )}
       </div>
       <div className="col-lg-3 col-md-12">
         {getEthNetWorthWithoutOHM(props.ethAccounts) > 0 && (
           <p>
-            Net Worth w/o OHM: {formatCurrency(getEthNetWorthWithoutOHM(props.ethAccounts))}
+            Net Worth w/o OHM: {formatCurrency(getEthNetWorthWithoutOHM(props.ethAccounts), props.currency)}
           </p>
         )}
       </div>
