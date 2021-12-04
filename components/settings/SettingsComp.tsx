@@ -123,7 +123,7 @@ const SettingsComp = () => {
   return (
     <div>
       <button
-        className="btn btn-danger"
+        className="btn btn-info"
         data-bs-toggle="modal"
         data-bs-target="#settingsModal"
       >
