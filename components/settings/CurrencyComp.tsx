@@ -3,11 +3,11 @@ const CurrencyComp = (props: { currentCurrency: string, setCurrencyHandler(newCu
   return (
     <div>
       <p>Currency</p>
-      <select className="form-select" aria-label="Currency selection" onChange={(formEvent) => {
+      <select className="form-select" aria-label="Currency selection" value={props.currentCurrency} onChange={(formEvent) => {
         props.setCurrencyHandler(formEvent.target.value);
       }}>
         {currencyList.map(currency => 
-          <option key={currency} value={currency} selected={currency === props.currentCurrency}>{currency}</option>
+          <option key={currency} value={currency}>{currency}</option>
         )}
       </select>
     </div>
