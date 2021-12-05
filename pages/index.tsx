@@ -30,7 +30,9 @@ const Home = () => {
   const [account, setAccount]: [Account, Dispatch<SetStateAction<Account>>] =
     useState(defaultSettings.account);
 
-  const getSettingsFromLS = (): Setting => {
+  const [isMounted, setIsMounted]: [boolean, Dispatch<SetStateAction<boolean>>] = useState(false);
+
+  const getSettingsFromLS = async (): Promise<Setting> => {
     const settings: Setting = JSON.parse(localStorage.getItem("settings"));
     return settings;
   };
@@ -47,14 +49,46 @@ const Home = () => {
     return updatedAccount;
   };
 
-  // only runs once onMount
-  useEffect(() => {
-    if (getSettingsFromLS() !== null && window) {
-      setSettings(getSettingsFromLS());
-      getPopulatedAccounts(settings.account).then((account) => {
-        setAccount(account);
-      });
+  // merge the old settings with the new setting's model
+  const getMigratedSettings = async (oldSettings: Setting): Promise<Setting> => {
+    try {
+      const migratedSettings: any = {};
+      for (const prop in defaultSettings) {
+        if (Object.prototype.hasOwnProperty.call(oldSettings, prop)) {
+          // if it already has the prop then copy it's value
+          migratedSettings[prop] = oldSettings[prop];
+        }
+        else {
+          // if it doesn't have the new prop then create it with a default value
+          migratedSettings[prop] = defaultSettings[prop];
+        };
+      };
+      return migratedSettings;
+    } catch (error) {
+      console.error(error);
     }
+  }
+
+  // only runs once onMount
+  const onMount = async () => {
+    try {
+      const settingsFromLS = await getSettingsFromLS();
+      if (settingsFromLS !== null && window) {
+        const migratedSettings = await getMigratedSettings(settingsFromLS);
+        localStorage.setItem('settings', JSON.stringify(migratedSettings))
+        setSettings(migratedSettings);
+        getPopulatedAccounts(settings.account).then((account) => {
+          setAccount(account);
+        });
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  useEffect(() => {
+    onMount().then(() => {
+      setIsMounted(true);
+    });
   }, []);
 
   // runs when 'settings' gets updated
@@ -125,7 +159,7 @@ const Home = () => {
             </div>
           </div>
           <div className={`row ${styles.section}`}>
-            {account.ethAccounts.length === 0 && (
+            {isMounted === false && (
               <div>
                 <p>Loading...</p>
                 <Loader
@@ -137,7 +171,7 @@ const Home = () => {
                 />
               </div>
             )}
-            {account.ethAccounts.length > 0 &&
+            {(!(isMounted === false) && account.ethAccounts.length > 0) &&
               account.ethAccounts.map((ethAccount) => (
                 <div
                   className="col-xl-3 col-lg-4 col-md-6 col-sm-12 mt-3"

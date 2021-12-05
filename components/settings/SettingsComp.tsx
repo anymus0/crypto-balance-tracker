@@ -21,8 +21,8 @@ import { SettingsContext } from "../../pages/index";
 const SettingsComp = () => {
   // use settings context
   const { settings, setSettings } = useContext(SettingsContext);
-  const saveSettings = (): void => {
-    localStorage.setItem("settings", JSON.stringify(settings));
+  const saveSettings = (settingToSave: Setting): void => {
+    localStorage.setItem("settings", JSON.stringify(settingToSave));
   };
 
   // currency
@@ -30,6 +30,7 @@ const SettingsComp = () => {
     const newSettings: Setting = JSON.parse(JSON.stringify(settings));
     newSettings.currency = newCurrency;
     setSettings(newSettings);
+    saveSettings(newSettings);
   }
 
   // createAccount methods
@@ -42,6 +43,7 @@ const SettingsComp = () => {
     const newSettings: Setting = JSON.parse(JSON.stringify(settings));
     newSettings.account.ethAccounts.push(newEthAccount);
     setSettings(newSettings);
+    saveSettings(newSettings);
   };
 
   const createContractAccount = (value: string): void => {
@@ -52,6 +54,7 @@ const SettingsComp = () => {
     const newSettings: Setting = JSON.parse(JSON.stringify(settings));
     newSettings.account.contractAccounts.push(newContractAccount);
     setSettings(newSettings);
+    saveSettings(newSettings);
   };
 
   const createBinanceAccount = (value: string): void => {
@@ -62,6 +65,7 @@ const SettingsComp = () => {
     const newSettings: Setting = JSON.parse(JSON.stringify(settings));
     newSettings.account.binanceAccounts.push(newBinanceAccount);
     setSettings(newSettings);
+    saveSettings(newSettings);
   };
 
   const createKucoinAccount = (value: string, secret: string): void => {
@@ -73,6 +77,7 @@ const SettingsComp = () => {
     const newSettings: Setting = JSON.parse(JSON.stringify(settings));
     newSettings.account.kucoinAccounts.push(newKucoinAccount);
     setSettings(newSettings);
+    saveSettings(newSettings);
   };
 
   // removeAccounts methods
@@ -85,6 +90,7 @@ const SettingsComp = () => {
     const newSettings: Setting = JSON.parse(JSON.stringify(settings));
     newSettings.account.ethAccounts = filteredEthAccounts;
     setSettings(newSettings);
+    saveSettings(newSettings);
   };
 
   const removeContractAccount = (accountID: string): void => {
@@ -96,6 +102,7 @@ const SettingsComp = () => {
     const newSettings: Setting = JSON.parse(JSON.stringify(settings));
     newSettings.account.contractAccounts = filteredContarctAccounts;
     setSettings(newSettings);
+    saveSettings(newSettings);
   };
 
   const removeBinanceAccount = (accountID: string): void => {
@@ -107,6 +114,7 @@ const SettingsComp = () => {
     const newSettings: Setting = JSON.parse(JSON.stringify(settings));
     newSettings.account.binanceAccounts = filteredBinanceAccounts;
     setSettings(newSettings);
+    saveSettings(newSettings);
   };
 
   const removeKucoinAccount = (accountID: string): void => {
@@ -118,6 +126,7 @@ const SettingsComp = () => {
     const newSettings: Setting = JSON.parse(JSON.stringify(settings));
     newSettings.account.kucoinAccounts = filteredKucoinAccounts;
     setSettings(newSettings);
+    saveSettings(newSettings);
   };
 
   return (
@@ -185,16 +194,6 @@ const SettingsComp = () => {
                 data-bs-dismiss="modal"
               >
                 Close
-              </button>
-              <button
-                type="button"
-                className="btn btn-primary"
-                onClick={() => {
-                  saveSettings();
-                }}
-                data-bs-dismiss="modal"
-              >
-                Save Changes
               </button>
             </div>
           </div>
