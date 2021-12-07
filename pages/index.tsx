@@ -85,18 +85,16 @@ const Home = () => {
         const migratedSettings = await getMigratedSettings(settingsFromLS);
         localStorage.setItem('settings', JSON.stringify(migratedSettings))
         setSettings(migratedSettings);
-        getPopulatedAccounts(settings.account).then((account) => {
-          setAccount(account);
-        });
+        const account = await getPopulatedAccounts(settings.account);
+        setAccount(account);
       }
+      setIsMounted(true);
     } catch (error) {
       console.error(error);
     }
   }
   useEffect(() => {
-    onMount().then(() => {
-      setIsMounted(true);
-    });
+    onMount();
   }, []);
 
   // runs when 'settings' gets updated
@@ -172,7 +170,7 @@ const Home = () => {
           </div>
         </div>
       </header>
-      {isMounted === false && loading}
+      {(isMounted === false) && loading}
       {(!(isMounted === false) && account.ethAccounts.length > 0) && (
         <main>
           <div className="container pt-5">
