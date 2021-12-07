@@ -17,31 +17,19 @@ export const fetchCryptoData = async (name: string, symbol: string, currency: st
     const fetchURLByName = `${coingeckoAPI}/coins/markets?vs_currency=${currency}&ids=${name.toLowerCase()}`;
     const resByName = await fetch(fetchURLByName);
     const dataByName: CryptocurrencyData[] = await resByName.json();
-    let data = {};
+    // if fetching by name returns no data, then try fetching by symbol
     if (
       dataByName.length === 0 ||
       dataByName === null ||
       dataByName === undefined
     ) {
-      // if fetching by name returns no data, then try fetching by symbol
-      const fetchURLBySymbol = `${coingeckoAPI}/coins/markets?vs_currency=${currency}&ids=${symbol.toLowerCase()}`;
+      const fetchURLBySymbol = `${coingeckoAPI}/coins/markets?vs_currency=${currency}&symbols=${symbol.toLowerCase()}`;
       const resBySymbol = await fetch(fetchURLBySymbol);
       const dataBySymbol: CryptocurrencyData[] = await resBySymbol.json();
-      data = dataBySymbol;
+      return dataBySymbol[0];
     } else {
-      data = dataByName;
+      return dataByName[0];
     }
-
-    // in case of sOHM fetch the OHM token
-    if (symbol === 'sOHM') {
-      const fetchOHM = `${coingeckoAPI}/coins/markets?vs_currency=${currency}&ids=olympus`;
-      const resByName = await fetch(fetchOHM);
-      const dataOHM: CryptocurrencyData[] = await resByName.json();
-      data = dataOHM;
-    }
-
-    const cryptoData: CryptocurrencyData = data[0];
-    return cryptoData;
   } catch (error) {
     console.error(error);
   }
