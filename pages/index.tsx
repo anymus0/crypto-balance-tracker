@@ -101,12 +101,11 @@ const Home = () => {
 
   useEffect(() => {
     // refresh accounts every 5 seconds
-    let refresherID = null;
-    refresherID = setInterval(async () => {
+    const refresherID = setInterval(async () => {
       try {
-        getPopulatedAccounts(settings.account).then((account) => {
-          setAccount(account);
-        });
+        console.log('interval started');
+        const populatedAccounts = await getPopulatedAccounts(settings.account)
+        setAccount(populatedAccounts);
       } catch (error) {
         console.error(error);
       }
@@ -114,6 +113,7 @@ const Home = () => {
 
     return () => {
       clearInterval(refresherID);
+      console.log('interval cleared');
     };
   });
 
