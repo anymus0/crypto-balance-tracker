@@ -83,18 +83,26 @@ export const getPopulatedEthAccounts = async (
 
 // get balance of an eth address
 const getEthAddressBalance = async (ethAccountAddress: string) => {
-  const balanceInWei = await web3.eth.getBalance(ethAccountAddress);
-  const balance = parseFloat(web3.utils.fromWei(balanceInWei));
-  return balance;
+  try {
+    const balanceInWei = await web3.eth.getBalance(ethAccountAddress);
+    const balance = parseFloat(web3.utils.fromWei(balanceInWei));
+    return balance;
+  } catch (error) {
+    console.error(error);
+  }
 };
 
 // get unclaimed strong reward from strong proxy contract
 const getUnclaimedStrongReward = async (ethAccountAddress: string) => {
-  const strongProxyContract = '0xFbdDaDD80fe7bda00B901FbAf73803F2238Ae655'
-  const contractInstance = new web3.eth.Contract(STRONG, strongProxyContract);
-  const currentBlock = await web3.eth.getBlockNumber();
-  const rawRewards = await contractInstance.methods.getRewardAll(ethAccountAddress, currentBlock).call();
-  return (rawRewards * (10 ** -18));
+  try {
+    const strongProxyContract = '0xFbdDaDD80fe7bda00B901FbAf73803F2238Ae655'
+    const contractInstance = new web3.eth.Contract(STRONG, strongProxyContract);
+    const currentBlock = await web3.eth.getBlockNumber();
+    const rawRewards = await contractInstance.methods.getRewardAll(ethAccountAddress, currentBlock).call();
+    return (rawRewards * (10 ** -18));
+  } catch (error) {
+    console.error(error);
+  }
 }
 
 // get token balances of an eth address

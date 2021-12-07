@@ -33,20 +33,28 @@ const Home = () => {
   const [isMounted, setIsMounted]: [boolean, Dispatch<SetStateAction<boolean>>] = useState(false);
 
   const getSettingsFromLS = async (): Promise<Setting> => {
-    const settings: Setting = JSON.parse(localStorage.getItem("settings"));
-    return settings;
+    try {
+      const settings: Setting = JSON.parse(localStorage.getItem("settings"));
+      return settings;
+    } catch (error) {
+      console.error(error)
+    }
   };
 
   const getPopulatedAccounts = async (account: Account): Promise<Account> => {
-    const updatedAccount: Account = JSON.parse(JSON.stringify(account));
-    // eth accs
-    updatedAccount.ethAccounts = await getPopulatedEthAccounts(
-      updatedAccount.ethAccounts,
-      updatedAccount.contractAccounts,
-      settings.currency
-    );
-    // TODO: extend with exchange accs 'getPopulated_Exchange_Accounts()'
-    return updatedAccount;
+    try {
+      const updatedAccount: Account = JSON.parse(JSON.stringify(account));
+      // eth accs
+      updatedAccount.ethAccounts = await getPopulatedEthAccounts(
+        updatedAccount.ethAccounts,
+        updatedAccount.contractAccounts,
+        settings.currency
+      );
+      // TODO: extend with exchange accs 'getPopulated_Exchange_Accounts()'
+      return updatedAccount;
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   // merge the old settings with the new setting's model

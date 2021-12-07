@@ -1,5 +1,4 @@
 import { EthAccount } from "../models/Account";
-import { Setting } from "./../models/Setting"
 import styles from "../styles/EthAccountComp.module.scss";
 import TokenComp from "./TokenComp";
 
