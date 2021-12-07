@@ -13,52 +13,28 @@ const web3 = new Web3(process.env.ethNodeURL);
 
 export const fetchCryptoData = async (name: string, symbol: string, currency: string) => {
   try {
-    // handle rename of TIME to wonderland (coingecko compatibility issue)
-    if (name === "Time") {
+    // handle rename of MEMOries to wonderland (MEMOries is not listed on coingecko)
+    if (name === "MEMOries") {
       name = "Wonderland";
-    }
-    // handle rename of wsOHM to wrapped-staked-olympus (coingecko compatibility issue)
-    if (symbol === "wsOHM") {
-      name = "wrapped-staked-olympus";
     }
 
     const coingeckoAPI = "https://api.coingecko.com/api/v3";
     const fetchURLByName = `${coingeckoAPI}/coins/markets?vs_currency=${currency}&ids=${name.toLowerCase()}`;
     const resByName = await fetch(fetchURLByName);
     const dataByName: CryptocurrencyData[] = await resByName.json();
-    let data = {};
+    // if fetching by name returns no data, then try fetching by symbol
     if (
       dataByName.length === 0 ||
       dataByName === null ||
       dataByName === undefined
     ) {
-      // if fetching by name returns no data, then try fetching by symbol
-      const fetchURLBySymbol = `${coingeckoAPI}/coins/markets?vs_currency=${currency}&ids=${symbol.toLowerCase()}`;
+      const fetchURLBySymbol = `${coingeckoAPI}/coins/markets?vs_currency=${currency}&symbols=${symbol.toLowerCase()}`;
       const resBySymbol = await fetch(fetchURLBySymbol);
       const dataBySymbol: CryptocurrencyData[] = await resBySymbol.json();
-      data = dataBySymbol;
+      return dataBySymbol[0];
     } else {
-      data = dataByName;
+      return dataByName[0];
     }
-
-    // in case of sOHM fetch the OHM token
-    if (symbol === 'sOHM') {
-      const fetchOHM = `${coingeckoAPI}/coins/markets?vs_currency=${currency}&ids=olympus`;
-      const resByName = await fetch(fetchOHM);
-      const dataOHM: CryptocurrencyData[] = await resByName.json();
-      data = dataOHM;
-    }
-
-    // in case of MEMO fetch the Time token
-    if (symbol === "MEMO") {
-      const fetchMEMO = `${coingeckoAPI}/coins/markets?vs_currency=${currency}&ids=wonderland`;
-      const resByName = await fetch(fetchMEMO);
-      const dataTIME: CryptocurrencyData[] = await resByName.json();
-      data = dataTIME;
-    }
-
-    const cryptoData: CryptocurrencyData = data[0];
-    return cryptoData;
   } catch (error) {
     console.error(error);
   }
