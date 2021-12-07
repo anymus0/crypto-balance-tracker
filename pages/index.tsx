@@ -103,7 +103,6 @@ const Home = () => {
     // refresh accounts every 5 seconds
     const refresherID = setInterval(async () => {
       try {
-        console.log('interval started');
         const populatedAccounts = await getPopulatedAccounts(settings.account)
         setAccount(populatedAccounts);
       } catch (error) {
@@ -113,7 +112,6 @@ const Home = () => {
 
     return () => {
       clearInterval(refresherID);
-      console.log('interval cleared');
     };
   });
 
