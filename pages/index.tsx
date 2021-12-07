@@ -33,20 +33,28 @@ const Home = () => {
   const [isMounted, setIsMounted]: [boolean, Dispatch<SetStateAction<boolean>>] = useState(false);
 
   const getSettingsFromLS = async (): Promise<Setting> => {
-    const settings: Setting = JSON.parse(localStorage.getItem("settings"));
-    return settings;
+    try {
+      const settings: Setting = JSON.parse(localStorage.getItem("settings"));
+      return settings;
+    } catch (error) {
+      console.error(error)
+    }
   };
 
   const getPopulatedAccounts = async (account: Account): Promise<Account> => {
-    const updatedAccount: Account = JSON.parse(JSON.stringify(account));
-    // eth accs
-    updatedAccount.ethAccounts = await getPopulatedEthAccounts(
-      updatedAccount.ethAccounts,
-      updatedAccount.contractAccounts,
-      settings.currency
-    );
-    // TODO: extend with exchange accs 'getPopulated_Exchange_Accounts()'
-    return updatedAccount;
+    try {
+      const updatedAccount: Account = JSON.parse(JSON.stringify(account));
+      // eth accs
+      updatedAccount.ethAccounts = await getPopulatedEthAccounts(
+        updatedAccount.ethAccounts,
+        updatedAccount.contractAccounts,
+        settings.currency
+      );
+      // TODO: extend with exchange accs 'getPopulated_Exchange_Accounts()'
+      return updatedAccount;
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   // merge the old settings with the new setting's model
@@ -93,19 +101,18 @@ const Home = () => {
 
   // runs when 'settings' gets updated
   useEffect(() => {
+    setIsMounted(false);
     getPopulatedAccounts(settings.account).then((account) => {
       setAccount(account);
-    });
+    }).then(() => { setIsMounted(true); });
   }, [settings]);
 
   useEffect(() => {
     // refresh accounts every 5 seconds
-    let refresherID = null;
-    refresherID = setInterval(async () => {
+    const refresherID = setInterval(async () => {
       try {
-        getPopulatedAccounts(settings.account).then((account) => {
-          setAccount(account);
-        });
+        const populatedAccounts = await getPopulatedAccounts(settings.account)
+        setAccount(populatedAccounts);
       } catch (error) {
         console.error(error);
       }
@@ -115,6 +122,20 @@ const Home = () => {
       clearInterval(refresherID);
     };
   });
+
+  const loading =
+    (
+      <div>
+        <p>Loading...</p>
+        <Loader
+          type="Puff"
+          color="#6BF19F"
+          height={100}
+          width={100}
+          timeout={6000}
+        />
+      </div>
+    );
 
   return (
     <div id="app">
@@ -159,18 +180,7 @@ const Home = () => {
             </div>
           </div>
           <div className={`row ${styles.section}`}>
-            {isMounted === false && (
-              <div>
-                <p>Loading...</p>
-                <Loader
-                  type="Puff"
-                  color="#6BF19F"
-                  height={100}
-                  width={100}
-                  timeout={6000}
-                />
-              </div>
-            )}
+            {isMounted === false && loading}
             {(!(isMounted === false) && account.ethAccounts.length > 0) &&
               account.ethAccounts.map((ethAccount) => (
                 <div

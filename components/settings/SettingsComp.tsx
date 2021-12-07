@@ -27,106 +27,142 @@ const SettingsComp = () => {
 
   // currency
   const setCurrencyHandler = (newCurrency: string) => {
-    const newSettings: Setting = JSON.parse(JSON.stringify(settings));
-    newSettings.currency = newCurrency;
-    setSettings(newSettings);
-    saveSettings(newSettings);
+    try {
+      const newSettings: Setting = JSON.parse(JSON.stringify(settings));
+      newSettings.currency = newCurrency;
+      setSettings(newSettings);
+      saveSettings(newSettings);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   // createAccount methods
   const createEthAccount = (value: string): void => {
-    const newEthAccount: EthAccount = {
-      id: uuidv4(),
-      value: value,
-      tokens: [],
-    };
-    const newSettings: Setting = JSON.parse(JSON.stringify(settings));
-    newSettings.account.ethAccounts.push(newEthAccount);
-    setSettings(newSettings);
-    saveSettings(newSettings);
+    try {
+      const newEthAccount: EthAccount = {
+        id: uuidv4(),
+        value: value,
+        tokens: [],
+      };
+      const newSettings: Setting = JSON.parse(JSON.stringify(settings));
+      newSettings.account.ethAccounts.push(newEthAccount);
+      setSettings(newSettings);
+      saveSettings(newSettings);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const createContractAccount = (value: string): void => {
-    const newContractAccount: ContractAccount = {
-      id: uuidv4(),
-      value: value,
-    };
-    const newSettings: Setting = JSON.parse(JSON.stringify(settings));
-    newSettings.account.contractAccounts.push(newContractAccount);
-    setSettings(newSettings);
-    saveSettings(newSettings);
+    try {
+      const newContractAccount: ContractAccount = {
+        id: uuidv4(),
+        value: value,
+      };
+      const newSettings: Setting = JSON.parse(JSON.stringify(settings));
+      newSettings.account.contractAccounts.push(newContractAccount);
+      setSettings(newSettings);
+      saveSettings(newSettings);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const createBinanceAccount = (value: string): void => {
-    const newBinanceAccount: BinanceAccount = {
-      id: uuidv4(),
-      value: value,
-    };
-    const newSettings: Setting = JSON.parse(JSON.stringify(settings));
-    newSettings.account.binanceAccounts.push(newBinanceAccount);
-    setSettings(newSettings);
-    saveSettings(newSettings);
+    try {
+      const newBinanceAccount: BinanceAccount = {
+        id: uuidv4(),
+        value: value,
+      };
+      const newSettings: Setting = JSON.parse(JSON.stringify(settings));
+      newSettings.account.binanceAccounts.push(newBinanceAccount);
+      setSettings(newSettings);
+      saveSettings(newSettings);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const createKucoinAccount = (value: string, secret: string): void => {
-    const newKucoinAccount: KucoinAccount = {
-      id: uuidv4(),
-      value: value,
-      secret: secret,
-    };
-    const newSettings: Setting = JSON.parse(JSON.stringify(settings));
-    newSettings.account.kucoinAccounts.push(newKucoinAccount);
-    setSettings(newSettings);
-    saveSettings(newSettings);
+    try {
+      const newKucoinAccount: KucoinAccount = {
+        id: uuidv4(),
+        value: value,
+        secret: secret,
+      };
+      const newSettings: Setting = JSON.parse(JSON.stringify(settings));
+      newSettings.account.kucoinAccounts.push(newKucoinAccount);
+      setSettings(newSettings);
+      saveSettings(newSettings);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   // removeAccounts methods
   const removeEthAccount = (accountID: string): void => {
-    const filteredEthAccounts = settings.account.ethAccounts.filter(
-      (ethAccount) => {
-        return ethAccount.id !== accountID;
-      }
-    );
-    const newSettings: Setting = JSON.parse(JSON.stringify(settings));
-    newSettings.account.ethAccounts = filteredEthAccounts;
-    setSettings(newSettings);
-    saveSettings(newSettings);
+    try {
+      const filteredEthAccounts = settings.account.ethAccounts.filter(
+        (ethAccount) => {
+          return ethAccount.id !== accountID;
+        }
+      );
+      const newSettings: Setting = JSON.parse(JSON.stringify(settings));
+      newSettings.account.ethAccounts = filteredEthAccounts;
+      setSettings(newSettings);
+      saveSettings(newSettings);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const removeContractAccount = (accountID: string): void => {
-    const filteredContarctAccounts = settings.account.contractAccounts.filter(
-      (contractAccount) => {
-        return contractAccount.id !== accountID;
-      }
-    );
-    const newSettings: Setting = JSON.parse(JSON.stringify(settings));
-    newSettings.account.contractAccounts = filteredContarctAccounts;
-    setSettings(newSettings);
-    saveSettings(newSettings);
+    try {
+      const filteredContarctAccounts = settings.account.contractAccounts.filter(
+        (contractAccount) => {
+          return contractAccount.id !== accountID;
+        }
+      );
+      const newSettings: Setting = JSON.parse(JSON.stringify(settings));
+      newSettings.account.contractAccounts = filteredContarctAccounts;
+      setSettings(newSettings);
+      saveSettings(newSettings);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const removeBinanceAccount = (accountID: string): void => {
-    const filteredBinanceAccounts = settings.account.binanceAccounts.filter(
-      (binanceAccount) => {
-        return binanceAccount.id !== accountID;
-      }
-    );
-    const newSettings: Setting = JSON.parse(JSON.stringify(settings));
-    newSettings.account.binanceAccounts = filteredBinanceAccounts;
-    setSettings(newSettings);
-    saveSettings(newSettings);
+    try {
+      const filteredBinanceAccounts = settings.account.binanceAccounts.filter(
+        (binanceAccount) => {
+          return binanceAccount.id !== accountID;
+        }
+      );
+      const newSettings: Setting = JSON.parse(JSON.stringify(settings));
+      newSettings.account.binanceAccounts = filteredBinanceAccounts;
+      setSettings(newSettings);
+      saveSettings(newSettings);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   const removeKucoinAccount = (accountID: string): void => {
-    const filteredKucoinAccounts = settings.account.kucoinAccounts.filter(
-      (kucoinAccount) => {
-        return kucoinAccount.id !== accountID;
-      }
-    );
-    const newSettings: Setting = JSON.parse(JSON.stringify(settings));
-    newSettings.account.kucoinAccounts = filteredKucoinAccounts;
-    setSettings(newSettings);
-    saveSettings(newSettings);
+    try {
+      const filteredKucoinAccounts = settings.account.kucoinAccounts.filter(
+        (kucoinAccount) => {
+          return kucoinAccount.id !== accountID;
+        }
+      );
+      const newSettings: Setting = JSON.parse(JSON.stringify(settings));
+      newSettings.account.kucoinAccounts = filteredKucoinAccounts;
+      setSettings(newSettings);
+      saveSettings(newSettings);
+    } catch (error) {
+      console.error();
+    }
   };
 
   return (
