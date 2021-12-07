@@ -172,17 +172,17 @@ const Home = () => {
           </div>
         </div>
       </header>
-      <main>
-        <div className="container pt-5">
-          <div className={`row ${styles.section}`}>
-            <div className="col">
-              <NetWorthComp ethAccounts={account.ethAccounts} currency={settings.currency}></NetWorthComp>
+      {isMounted === false && loading}
+      {(!(isMounted === false) && account.ethAccounts.length > 0) && (
+        <main>
+          <div className="container pt-5">
+            <div className={`row ${styles.section}`}>
+              <div className="col">
+                <NetWorthComp ethAccounts={account.ethAccounts} currency={settings.currency}></NetWorthComp>
+              </div>
             </div>
-          </div>
-          <div className={`row ${styles.section}`}>
-            {isMounted === false && loading}
-            {(!(isMounted === false) && account.ethAccounts.length > 0) &&
-              account.ethAccounts.map((ethAccount) => (
+            <div className={`row ${styles.section}`}>
+              {account.ethAccounts.map((ethAccount) => (
                 <div
                   className="col-xl-3 col-lg-4 col-md-6 col-sm-12 mt-3"
                   key={ethAccount.id}
@@ -190,9 +190,10 @@ const Home = () => {
                   <EthAccountComp account={ethAccount} currency={settings.currency} />
                 </div>
               ))}
+            </div>
           </div>
-        </div>
-      </main>
+        </main>)}
+
     </div>
   );
 };
