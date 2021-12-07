@@ -93,9 +93,10 @@ const Home = () => {
 
   // runs when 'settings' gets updated
   useEffect(() => {
+    setIsMounted(false);
     getPopulatedAccounts(settings.account).then((account) => {
       setAccount(account);
-    });
+    }).then(() => { setIsMounted(true); });
   }, [settings]);
 
   useEffect(() => {
@@ -115,6 +116,20 @@ const Home = () => {
       clearInterval(refresherID);
     };
   });
+
+  const loading =
+    (
+      <div>
+        <p>Loading...</p>
+        <Loader
+          type="Puff"
+          color="#6BF19F"
+          height={100}
+          width={100}
+          timeout={6000}
+        />
+      </div>
+    );
 
   return (
     <div id="app">
@@ -159,18 +174,7 @@ const Home = () => {
             </div>
           </div>
           <div className={`row ${styles.section}`}>
-            {isMounted === false && (
-              <div>
-                <p>Loading...</p>
-                <Loader
-                  type="Puff"
-                  color="#6BF19F"
-                  height={100}
-                  width={100}
-                  timeout={6000}
-                />
-              </div>
-            )}
+            {isMounted === false && loading}
             {(!(isMounted === false) && account.ethAccounts.length > 0) &&
               account.ethAccounts.map((ethAccount) => (
                 <div
