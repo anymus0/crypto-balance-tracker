@@ -6,7 +6,7 @@ import {
   Account,
   BinanceAccount,
 } from "./models/Account";
-import { ERC20, STRONG } from "./models/ContractABI";
+import { ERC20, strongV1, strongV2 } from "./models/ContractABI";
 // web3
 import Web3 from "web3";
 const web3 = new Web3(process.env.ethNodeURL);
@@ -83,11 +83,23 @@ const getEthAddressBalance = async (ethAccountAddress: string) => {
 // get unclaimed strong reward from strong proxy contract
 const getUnclaimedStrongReward = async (ethAccountAddress: string) => {
   try {
-    const strongProxyContract = '0xFbdDaDD80fe7bda00B901FbAf73803F2238Ae655'
-    const contractInstance = new web3.eth.Contract(STRONG, strongProxyContract);
+    const strongProxyContractV1 = '0xFbdDaDD80fe7bda00B901FbAf73803F2238Ae655';
+    const strongProxyContractV2 = '0xc5622f143972a5da6aabc5f5379311ee5eb48568';
+    const V1contractInstance = new web3.eth.Contract(strongV1, strongProxyContractV1);
+    const V2contractInstance = new web3.eth.Contract(strongV2, strongProxyContractV2);
     const currentBlock = await web3.eth.getBlockNumber();
-    const rawRewards = await contractInstance.methods.getRewardAll(ethAccountAddress, currentBlock).call();
-    return (rawRewards * (10 ** -18));
+    const rawRewardsFromV1: number = await V1contractInstance.methods.getRewardAll(ethAccountAddress, currentBlock).call();
+
+    // get rewards from V2 contract
+    const entityNodeCount: number = await V2contractInstance.methods.entityNodeCount(ethAccountAddress).call();
+    let rawRewardsFromV2 = 0;
+    for (let nodeId = 1; nodeId <= entityNodeCount; nodeId++) {
+      const rawRewardOfNodeId: number = await V2contractInstance.methods.getNodeReward(ethAccountAddress, nodeId).call();
+      rawRewardsFromV2 += (rawRewardOfNodeId * (10 ** -18));
+    }
+
+    const unclaimedRewards = ((rawRewardsFromV1 * (10 ** -18)) + rawRewardsFromV2)
+    return unclaimedRewards;
   } catch (error) {
     console.error(error);
   }

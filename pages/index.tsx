@@ -83,7 +83,7 @@ const Home = () => {
       const settingsFromLS = await getSettingsFromLS();
       if (settingsFromLS !== null && window) {
         const migratedSettings = await getMigratedSettings(settingsFromLS);
-        localStorage.setItem('settings', JSON.stringify(migratedSettings))
+        localStorage.setItem('settings', JSON.stringify(migratedSettings));
         setSettings(migratedSettings);
         const account = await getPopulatedAccounts(settings.account);
         setAccount(account);

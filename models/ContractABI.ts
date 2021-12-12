@@ -223,7 +223,7 @@ export const ERC20: AbiItem[] = [
   },
 ];
 
-export const STRONG: AbiItem[] = [
+export const strongV1: AbiItem[] = [
   {
     inputs: [
       { internalType: "address", name: "entity", type: "address" },
@@ -235,3 +235,23 @@ export const STRONG: AbiItem[] = [
     type: "function",
   },
 ];
+
+export const strongV2: AbiItem[] = [
+  {
+    inputs: [{ internalType: "address", name: "", type: "address" }],
+    name: "entityNodeCount",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "_entity", type: "address" },
+      { internalType: "uint256", name: "_nodeId", type: "uint256" },
+    ],
+    name: "getNodeReward",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  }
+]
