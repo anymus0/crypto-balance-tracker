@@ -6,16 +6,26 @@ import {
   Account,
   BinanceAccount,
 } from "./models/Account";
-import { ERC20, STRONG } from "./models/ContractABI";
+import { ERC20Abi, thorAbi } from "./models/ContractABI";
 // web3
-import Web3 from "web3";
-const web3 = new Web3(process.env.ethNodeURL);
+import { ethers } from "ethers";
+import { Interface } from "ethers/lib/utils";
+const web3Provider = new ethers.providers.JsonRpcProvider(
+  process.env.ethNodeURL
+);
 
-export const fetchCryptoData = async (name: string, symbol: string, currency: string) => {
+export const fetchCryptoData = async (
+  name: string,
+  symbol: string,
+  currency: string
+) => {
   try {
-    // handle rename of MEMOries to wonderland (MEMOries is not listed on coingecko)
+    // rename token names to match CoinGecko the API id
     if (name === "MEMOries") {
       name = "Wonderland";
+    }
+    if (name === "THOR v2") {
+      name = "thor";
     }
 
     const coingeckoAPI = "https://api.coingecko.com/api/v3";
@@ -52,7 +62,11 @@ export const getPopulatedEthAccounts = async (
     for (const ethAccount of ethAccounts) {
       const populatedEthAccount: EthAccount = {
         value: ethAccount.value,
-        tokens: await getTokenBalances(ethAccount.value, contractAccounts, currency),
+        tokens: await getTokenBalances(
+          ethAccount.value,
+          contractAccounts,
+          currency
+        ),
         id: ethAccount.id,
       };
       // add AVAX as the 1st token in the tokens array
@@ -77,26 +91,31 @@ export const getPopulatedEthAccounts = async (
 // get balance of an eth address
 const getEthAddressBalance = async (ethAccountAddress: string) => {
   try {
-    const balanceInWei = await web3.eth.getBalance(ethAccountAddress);
-    const balance = parseFloat(web3.utils.fromWei(balanceInWei));
+    const balanceInWei = await web3Provider.getBalance(ethAccountAddress);
+    const balance = parseFloat(ethers.utils.formatEther(balanceInWei));
     return balance;
   } catch (error) {
     console.error(error);
   }
 };
 
-// get unclaimed strong reward from strong proxy contract
-const getUnclaimedStrongReward = async (ethAccountAddress: string) => {
+// get unclaimed thor reward
+const getUnclaimedThorReward = async (ethAccountAddress: string, contractAddress: string) => {
   try {
-    const strongProxyContract = '0xFbdDaDD80fe7bda00B901FbAf73803F2238Ae655'
-    const contractInstance = new web3.eth.Contract(STRONG, strongProxyContract);
-    const currentBlock = await web3.eth.getBlockNumber();
-    const rawRewards = await contractInstance.methods.getRewardAll(ethAccountAddress, currentBlock).call();
-    return (rawRewards * (10 ** -18));
+    // create void signer as 'msg.sender' is needed
+    const voidSigner = new ethers.VoidSigner(ethAccountAddress, web3Provider);
+    const thorContractInstance = new ethers.Contract(
+      contractAddress,
+      thorAbi,
+      voidSigner
+    );
+    const unclaimedRewardRaw = await thorContractInstance.getRewardAmount();
+    const unclaimedReward = Number.parseFloat(ethers.utils.formatUnits(unclaimedRewardRaw, 18));
+    return unclaimedReward;
   } catch (error) {
     console.error(error);
   }
-}
+};
 
 // get token balances of an eth address
 const getTokenBalances = async (
@@ -107,23 +126,34 @@ const getTokenBalances = async (
   try {
     const tokens: Token[] = [];
     for (const contract of contracts) {
-      // query token info
-      const contractInstance = new web3.eth.Contract(ERC20, contract.value);
-      const name = await contractInstance.methods.name().call();
-      const symbol = await contractInstance.methods.symbol().call();
+      const contractInstance = new ethers.Contract(
+        contract.value,
+        ERC20Abi,
+        web3Provider
+      );
+      // query token data
+      const name: string = await contractInstance.name();
+      const symbol: string = await contractInstance.symbol();
+      const decimal: number = await contractInstance.decimals();
+      const rawBalance: number = await contractInstance.balanceOf(
+        ethAccountAddress
+      );
       const token: Token = {
         name: name,
         symbol: symbol,
-        balance:
-          (await contractInstance.methods.balanceOf(ethAccountAddress).call()) /
-          10 ** (await contractInstance.methods.decimals().call()),
-        decimals: await contractInstance.methods.decimals().call(),
+        balance: Number.parseFloat(
+          ethers.utils.formatUnits(rawBalance, decimal)
+        ),
+        decimals: await contractInstance.decimals(),
         tokenData: await fetchCryptoData(name, symbol, currency),
       };
 
-      // if token is STRONG, then add the unclaimed tokens from the contract
-      if (symbol === "STRONG") {
-        token.balance += await getUnclaimedStrongReward(ethAccountAddress);
+      // if token is THOR, then add the unclaimed tokens from the contract
+      if (symbol === "THOR") {
+        token.balance += await getUnclaimedThorReward(
+          ethAccountAddress,
+          contract.value
+        );
       }
 
       tokens.push(token);
