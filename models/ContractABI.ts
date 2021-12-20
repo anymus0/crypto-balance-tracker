@@ -1,6 +1,4 @@
-import { AbiItem } from "web3-utils";
-
-export const ERC20: AbiItem[] = [
+export const ERC20Abi = [
   {
     constant: true,
     inputs: [],
@@ -223,7 +221,7 @@ export const ERC20: AbiItem[] = [
   },
 ];
 
-export const strongV1: AbiItem[] = [
+export const strongV1Abi = [
   {
     inputs: [
       { internalType: "address", name: "entity", type: "address" },
@@ -236,7 +234,7 @@ export const strongV1: AbiItem[] = [
   },
 ];
 
-export const strongV2: AbiItem[] = [
+export const strongV2Abi = [
   {
     inputs: [{ internalType: "address", name: "", type: "address" }],
     name: "entityNodeCount",
