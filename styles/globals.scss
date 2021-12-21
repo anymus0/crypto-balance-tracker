@@ -2,7 +2,7 @@
 
 html,
 body {
-  padding: 1rem;
+  padding: 0rem;
   margin: 0rem;
   background-color: colors.$primary-dark;
   color: colors.$primary-light;
@@ -19,4 +19,8 @@ a {
 
 .bg-primary-light {
   background-color: colors.$primary-light !important;
+}
+
+.text-primary-dark {
+  color: colors.$primary-dark !important;
 }
