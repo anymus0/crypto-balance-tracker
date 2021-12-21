@@ -117,6 +117,7 @@ const getUnclaimedThorReward = async (ethAccountAddress: string, contractAddress
     return unclaimedRewardAfterTax;
   } catch (error) {
     console.error(error);
+    return 0;
   }
 };
 
