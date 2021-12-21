@@ -1,3 +1,9 @@
+@use './colors';
+
 .accountCard {
   min-height: 10rem;
+}
+
+.tableDark {
+  color: colors.$primary-light;
 }

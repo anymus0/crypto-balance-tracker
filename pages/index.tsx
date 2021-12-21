@@ -182,7 +182,7 @@ const Home = () => {
             <div className={`row ${styles.section}`}>
               {account.ethAccounts.map((ethAccount) => (
                 <div
-                  className="col-xl-3 col-lg-4 col-md-6 col-sm-12 mt-3"
+                  className="col-xxl-3 col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12 mt-3"
                   key={ethAccount.id}
                 >
                   <EthAccountComp account={ethAccount} currency={settings.currency} />
