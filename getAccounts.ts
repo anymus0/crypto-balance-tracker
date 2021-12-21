@@ -111,7 +111,10 @@ const getUnclaimedThorReward = async (ethAccountAddress: string, contractAddress
     );
     const unclaimedRewardRaw = await thorContractInstance.getRewardAmount();
     const unclaimedReward = Number.parseFloat(ethers.utils.formatUnits(unclaimedRewardRaw, 18));
-    return unclaimedReward;
+    // substract claim tax
+    const claimTaxPercent = 10;
+    const unclaimedRewardAfterTax = unclaimedReward - ((unclaimedReward / 100) * claimTaxPercent)
+    return unclaimedRewardAfterTax;
   } catch (error) {
     console.error(error);
   }
