@@ -1,9 +1,17 @@
+@use './colors';
+
 .box {
-  padding: 0.3rem;
+  background-color: colors.$primary-light;
+  border-radius: 6px;
+  padding: 0.6rem;
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  p, h1, h2, h3, h4, h5, h6 {
+    color: black;
+  }
   p {
-    text-align: center;
     margin: 0rem !important;
     font-size: 1rem;
-    font-weight: bolder;
+    font-weight: bold;
   }
 }
