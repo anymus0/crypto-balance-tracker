@@ -5,7 +5,7 @@ import TokenTableRowComp from "./TokenTableRowComp";
 // component
 const EthAccountComp = (props: { account: EthAccount; currency: string }) => {
   return (
-    <div className={`shadow-lg bg-secondary-dark p-2 rounded border border-3 border-light ${styles.accountCard}`}>
+    <div className={`shadow-lg bg-secondary-dark p-2 rounded border border-3 border-light overflow ${styles.accountCard}`}>
       <h6 className="text-muted">{props.account.value.slice(0, 8)}...</h6>
       {props.account.tokens !== undefined && props.account.tokens.length > 0 && (
         <table className={`table table-borderless ${styles.tableDark}`}>
