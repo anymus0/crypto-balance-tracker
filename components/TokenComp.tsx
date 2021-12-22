@@ -3,7 +3,7 @@ import styles from "../styles/TokenComp.module.scss";
 import { formatCurrency } from "../formatCurrency";
 
 // component
-const TokenTableRowComp = (props: { token: Token; currency: string }) => {
+const TokenTableRowComp = (props: { token: Token; currency: string; walletAddress: string }) => {
   const formatDate = (rawDate: Date): string => {
     const formattedDate = new Date(rawDate).toLocaleTimeString();
     return formattedDate;
@@ -34,7 +34,7 @@ const TokenTableRowComp = (props: { token: Token; currency: string }) => {
           <button
             className="btn btn-primary shadow-lg mt-2"
             data-bs-toggle="modal"
-            data-bs-target={`#${props.token.symbol}Modal`}
+            data-bs-target={`#${props.token.symbol}-${props.walletAddress}-Modal`}
           >
             Details
           </button>
@@ -43,9 +43,9 @@ const TokenTableRowComp = (props: { token: Token; currency: string }) => {
       {/* <!-- Modal --> */}
       <div
         className={`modal fade ${styles.tokenModal}`}
-        id={`${props.token.symbol}Modal`}
+        id={`${props.token.symbol}-${props.walletAddress}-Modal`}
         tabIndex={-1}
-        aria-labelledby={`${props.token.symbol}ModalLabel`}
+        aria-labelledby={`${props.token.symbol}-${props.walletAddress}-ModalLabel`}
         aria-hidden="true"
       >
         <div className="modal-dialog">
@@ -53,7 +53,7 @@ const TokenTableRowComp = (props: { token: Token; currency: string }) => {
             <div className="modal-header">
               <h5
                 className="modal-title"
-                id={`${props.token.symbol}ModalLabel`}
+                id={`${props.token.symbol}-${props.walletAddress}-ModalLabel`}
               >
                 {props.token.symbol}
               </h5>
