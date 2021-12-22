@@ -30,3 +30,7 @@ a {
 .text-primary-dark {
   color: colors.$primary-dark !important;
 }
+
+.overflow {
+  overflow-x: scroll;
+}
