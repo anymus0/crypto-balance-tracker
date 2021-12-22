@@ -13,7 +13,7 @@ const TokenTableRowComp = (props: { token: Token; currency: string }) => {
           src={props.token.tokenData.image}
           alt="logo"
         />
-        <h6>{props.token.symbol}</h6>
+        <h6 className="m-0">{props.token.symbol}</h6>
         <p>{props.token.balance.toFixed(3)}</p>
       </div>
       <div className="col d-flex align-items-center">
