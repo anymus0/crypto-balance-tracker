@@ -17,7 +17,7 @@ const EthAccountComp = (props: { account: EthAccount; currency: string }) => {
               token={token}
               key={index}
               currency={props.currency}
-              hidden={token.balance <= 0}
+              hidden={token.balance <= 0 && index !== 0}
             />
           ))}
         </div>
