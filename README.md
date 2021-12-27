@@ -2,6 +2,9 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+### Env variables
+Copy `clientEnv.example.js` and rename it to `clientEnv.prod.js`, then change the variables to your needs.
+
 First, run the development server:
 
 ```bash
