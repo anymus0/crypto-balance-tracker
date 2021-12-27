@@ -12,7 +12,13 @@ const EthAccountComp = (props: { account: EthAccount; currency: string }) => {
       {props.account.tokens !== undefined && props.account.tokens.length > 0 && (
         <div className="container-fluid p-2">
           {props.account.tokens.map((token, index) => (
-            <TokenComp walletAddress={props.account.value.slice(0, 8)} token={token} key={index} currency={props.currency} />
+            <TokenComp
+              walletAddress={props.account.value.slice(0, 8)}
+              token={token}
+              key={index}
+              currency={props.currency}
+              hidden={token.balance <= 0}
+            />
           ))}
         </div>
       )}
