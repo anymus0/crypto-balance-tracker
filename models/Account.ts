@@ -1,4 +1,4 @@
-import { CryptocurrencyData } from './CryptocurrencyData';
+import { CryptocurrencyData, CryptocurrencyDataResponse } from './CryptocurrencyData';
 
 export interface KucoinAccount {
   value: string;
@@ -22,7 +22,7 @@ export interface Token {
   symbol: string;
   balance: number;
   decimals: number;
-  tokenData: CryptocurrencyData;
+  tokenData: CryptocurrencyDataResponse;
 };
 
 export interface ContractAccount {
