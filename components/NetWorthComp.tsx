@@ -8,7 +8,7 @@ const getEthNetWorth = (ethAccounts: EthAccount[]) => {
     for (let i = 0; i < ethAccounts.length; i++) {
       for (let j = 0; j < ethAccounts[i].tokens.length; j++) {
         const balance = ethAccounts[i].tokens[j].balance;
-        const value = ethAccounts[i].tokens[j].tokenData.current_price;
+        const value = ethAccounts[i].tokens[j].tokenData.result.current_price;
         netWorth += balance * value;
       }
     }
