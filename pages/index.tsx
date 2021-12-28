@@ -7,7 +7,7 @@ import React, {
   useEffect,
   Context,
 } from "react";
-import { getPopulatedEthAccounts } from "../getAccounts";
+import { getPopulatedEthAccounts } from "../web3Fetch";
 // Styles/Comps
 import SettingsComp from "../components/settings/SettingsComp";
 import EthAccountComp from "../components/EthAccountComp";
@@ -50,7 +50,6 @@ const Home = () => {
         updatedAccount.contractAccounts,
         settings.currency
       );
-      // TODO: extend with exchange accs 'getPopulated_Exchange_Accounts()'
       return updatedAccount;
     } catch (error) {
       console.error(error);

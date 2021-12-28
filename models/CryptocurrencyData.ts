@@ -32,3 +32,8 @@ export interface CryptocurrencyData {
   roi: Roi;
   last_updated: Date;
 }
+
+export interface CryptocurrencyDataResponse {
+  success: boolean;
+  result: CryptocurrencyData;
+}
