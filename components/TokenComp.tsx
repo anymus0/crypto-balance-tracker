@@ -28,13 +28,21 @@ const TokenTableRowComp = (props: {
         </div>
         <div className="col d-flex align-items-center">
           <p>
-            {formatCurrency(
+            {`Value: ${formatCurrency(
               props.token.balance * props.token.tokenData.result.current_price,
               props.currency
-            )}
+            )}`}
           </p>
         </div>
-        <div className="col d-flex align-items-center justify-content-center">
+        <div className="col d-flex align-items-center">
+          <p>
+            {`Market: ${formatCurrency(
+              props.token.tokenData.result.current_price,
+              props.currency
+            )}`}
+          </p>
+        </div>
+        <div className="col-12 d-flex align-items-center justify-content-center">
           <button
             className="btn btn-primary shadow-lg mt-2"
             data-bs-toggle="modal"
@@ -75,7 +83,8 @@ const TokenTableRowComp = (props: {
               <hr />
               <p>
                 {`Value: ${formatCurrency(
-                  props.token.balance * props.token.tokenData.result.current_price,
+                  props.token.balance *
+                    props.token.tokenData.result.current_price,
                   props.currency
                 )}`}
               </p>
@@ -92,7 +101,8 @@ const TokenTableRowComp = (props: {
               </p>
               <hr />
               <p>
-                Last updated: {formatDate(props.token.tokenData.result.last_updated)}
+                Last updated:{" "}
+                {formatDate(props.token.tokenData.result.last_updated)}
               </p>
               <hr />
               <p className="text-start">
