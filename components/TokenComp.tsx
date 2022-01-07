@@ -16,7 +16,7 @@ const TokenTableRowComp = (props: {
   return (
     <div>
       <div className={`row ${styles.box}`}>
-        <div className="col text-center">
+        <div className="col text-center pb-4">
           <img
             width={32}
             height={32}
@@ -24,9 +24,9 @@ const TokenTableRowComp = (props: {
             alt="logo"
           />
           <h6 className="m-0">{props.token.symbol}</h6>
-          <p>{props.token.balance.toFixed(3)}</p>
+          <p>{props.token.balance.toFixed(8)}</p>
         </div>
-        <div className="col d-flex align-items-center">
+        <div className="col-12 d-flex align-items-center justify-content-center">
           <p>
             {`Value: ${formatCurrency(
               props.token.balance * props.token.tokenData.result.current_price,
@@ -34,7 +34,7 @@ const TokenTableRowComp = (props: {
             )}`}
           </p>
         </div>
-        <div className="col d-flex align-items-center">
+        <div className="col-12 d-flex align-items-center justify-content-center">
           <p>
             {`Market: ${formatCurrency(
               props.token.tokenData.result.current_price,
@@ -77,7 +77,7 @@ const TokenTableRowComp = (props: {
               ></button>
             </div>
             <div className="modal-body">
-              <p>{`Balance: ${props.token.balance.toFixed(5)} ${
+              <p>{`Balance: ${props.token.balance} ${
                 props.token.symbol
               }`}</p>
               <hr />
