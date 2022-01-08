@@ -1029,3 +1029,50 @@ export const thorAbi = [
   },
   { stateMutability: "payable", type: "receive" },
 ];
+
+export const timeStakingAbi = [
+  {
+    inputs: [
+      {
+        internalType: "address",
+        name: "_Time",
+        type: "address",
+      },
+      {
+        internalType: "address",
+        name: "_Memories",
+        type: "address",
+      },
+      {
+        internalType: "uint32",
+        name: "_epochLength",
+        type: "uint32",
+      },
+      {
+        internalType: "uint256",
+        name: "_firstEpochNumber",
+        type: "uint256",
+      },
+      {
+        internalType: "uint32",
+        name: "_firstEpochTime",
+        type: "uint32",
+      },
+    ],
+    stateMutability: "nonpayable",
+    type: "constructor",
+  },
+  {
+    inputs: [],
+    name: "index",
+    outputs: [
+      {
+        internalType: "uint256",
+        name: "",
+        type: "uint256"
+      }
+    ],
+    stateMutability: "view",
+    type: "function"
+  },
+];

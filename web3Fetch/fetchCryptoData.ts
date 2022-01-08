@@ -16,6 +16,9 @@ export const fetchCryptoData = async (
     if (name === "THOR v2") {
       name = "thor";
     }
+    if (name === "Wrapped MEMO") {
+      name = "Wonderland";
+    }
     const coingeckoAPI = "https://api.coingecko.com/api/v3";
     const fetchURLByName = `${coingeckoAPI}/coins/markets?vs_currency=${currency}&ids=${name.toLowerCase()}`;
     const resByName = await fetch(fetchURLByName);
