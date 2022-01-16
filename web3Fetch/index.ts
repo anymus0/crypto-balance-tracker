@@ -10,7 +10,6 @@ const web3Provider = new ethers.providers.JsonRpcProvider(
 import { getUnclaimedThorReward } from "./getThorRewards";
 import { fetchCryptoData } from "./fetchCryptoData";
 import { getEthBalanceInEther } from './getEthBalanceInEther';
-import getTimeIndex from "./getTimeIndex";
 
 // get token balances of an eth address
 const getTokenBalances = async (
@@ -57,11 +56,6 @@ const getTokenBalances = async (
         decimals: decimals,
         tokenData: await fetchCryptoData(name, symbol, currency),
       };
-      // if token is wMEMO, then calculate the wMEMO price
-      if (name === "Wrapped MEMO") {
-        const timeIndex = await getTimeIndex(web3Provider);
-        token.tokenData.result.current_price = token.tokenData.result.current_price * timeIndex;
-      }
       tokens.push(token);
     }
     return tokens;

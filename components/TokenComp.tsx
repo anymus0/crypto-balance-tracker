@@ -3,7 +3,7 @@ import styles from "../styles/TokenComp.module.scss";
 import { formatCurrency } from "../formatCurrency";
 
 // component
-const TokenTableRowComp = (props: {
+const TokenComp = (props: {
   token: Token;
   currency: string;
   walletAddress: string;
@@ -134,4 +134,4 @@ const TokenTableRowComp = (props: {
   );
 };
 
-export default TokenTableRowComp;
+export default TokenComp;

@@ -1,6 +1,7 @@
 import { EthAccount } from "../models/Account";
 import styles from "../styles/EthAccountComp.module.scss";
 import TokenComp from "./TokenComp";
+import WmemoTokenComp from "./WmemoTokenComp";
 
 // component
 const EthAccountComp = (props: { account: EthAccount; currency: string }) => {
@@ -11,14 +12,27 @@ const EthAccountComp = (props: { account: EthAccount; currency: string }) => {
       <h6 className="text-muted">{props.account.value.slice(0, 8)}...</h6>
       {props.account.tokens !== undefined && props.account.tokens.length > 0 && (
         <div className="container-fluid p-2">
-          {props.account.tokens.map((token, index) => (
-            <TokenComp
-              walletAddress={props.account.value.slice(0, 8)}
-              token={token}
-              key={index}
-              currency={props.currency}
-            />
-          ))}
+          {props.account.tokens.map((token, index) => {
+            if (token.symbol === "wMEMO") {
+              return (
+                <WmemoTokenComp
+                  token={token}
+                  currency={props.currency}
+                  walletAddress={props.account.value}
+                  key={index}
+                ></WmemoTokenComp>
+              );
+            } else {
+              return (
+                <TokenComp
+                  token={token}
+                  currency={props.currency}
+                  walletAddress={props.account.value}
+                  key={index}
+                ></TokenComp>
+              );
+            }
+          })}
         </div>
       )}
     </div>
