@@ -100,6 +100,8 @@ const WmemoTokenComp = (props: {
                 <div className="modal-body">
                   <p>{`Balance: ${props.token.balance} ${props.token.symbol}`}</p>
                   <hr />
+                  <p>{`Balance (MEMO): ${balanceValue / props.token.tokenData.result.current_price} MEMO`}</p>
+                  <hr />
                   <p>
                     {`Value: ${formatCurrency(
                       props.token.balance *
@@ -110,6 +112,11 @@ const WmemoTokenComp = (props: {
                   <hr />
                   <p>{`Market Price: ${formatCurrency(
                     wMEMOPrice,
+                    props.currency
+                  )}`}</p>
+                  <hr />
+                  <p>{`Market Price (MEMO): ${formatCurrency(
+                    props.token.tokenData.result.current_price,
                     props.currency
                   )}`}</p>
                   <hr />
