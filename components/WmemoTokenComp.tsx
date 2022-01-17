@@ -26,9 +26,13 @@ const WmemoTokenComp = (props: {
   const [balanceValue, setBalanceValue]: [number, Dispatch<SetStateAction<number>>] =
   useState(0);
 
+  const [timeIndex, setTimeIndex]: [number, Dispatch<SetStateAction<number>>] =
+  useState(0);
+
   getTimeIndex().then((timeIndex) => {
     setWMEMOPrice(timeIndex * props.token.tokenData.result.current_price);
     setBalanceValue(wMEMOPrice * props.token.balance);
+    setTimeIndex(timeIndex);
   });
 
   return (
@@ -100,7 +104,7 @@ const WmemoTokenComp = (props: {
                 <div className="modal-body">
                   <p>{`Balance: ${props.token.balance} ${props.token.symbol}`}</p>
                   <hr />
-                  <p>{`Balance (MEMO): ${balanceValue / props.token.tokenData.result.current_price} MEMO`}</p>
+                  <p>{`Balance (MEMO): ${props.token.balance * timeIndex} MEMO`}</p>
                   <hr />
                   <p>
                     {`Value: ${formatCurrency(
