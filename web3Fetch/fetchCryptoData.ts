@@ -19,6 +19,18 @@ export const fetchCryptoData = async (
     if (name === "Wrapped MEMO") {
       name = "Wonderland";
     }
+    if (name === "Dai Stablecoin") {
+      name = "dai";
+    }
+    if (name === "USD Coin") {
+      name = "usd-coin";
+    }
+    if (name === "Tether USD") {
+      name = "tether";
+    }
+    if (name === "Magic Internet Money") {
+      name = "magic-internet-money";
+    }
     const coingeckoAPI = "https://api.coingecko.com/api/v3";
     const fetchURLByName = `${coingeckoAPI}/coins/markets?vs_currency=${currency}&ids=${name.toLowerCase()}`;
     const resByName = await fetch(fetchURLByName);
