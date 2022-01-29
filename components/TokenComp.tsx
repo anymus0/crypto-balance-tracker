@@ -46,7 +46,7 @@ const TokenTableRowComp = (props: {
           <button
             className="btn btn-primary shadow-lg mt-2"
             data-bs-toggle="modal"
-            data-bs-target={`#${props.token.symbol}-${props.walletAddress}-Modal`}
+            data-bs-target={`#${props.token.symbol.replaceAll(".", "")}-${props.walletAddress}-Modal`}
           >
             Details
           </button>
