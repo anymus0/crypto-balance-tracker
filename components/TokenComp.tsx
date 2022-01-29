@@ -55,9 +55,9 @@ const TokenTableRowComp = (props: {
       {/* <!-- Modal --> */}
       <div
         className={`modal fade ${styles.tokenModal}`}
-        id={`${props.token.symbol}-${props.walletAddress}-Modal`}
+        id={`${props.token.symbol.replaceAll(".", "")}-${props.walletAddress}-Modal`}
         tabIndex={-1}
-        aria-labelledby={`${props.token.symbol}-${props.walletAddress}-ModalLabel`}
+        aria-labelledby={`${props.token.symbol.replaceAll(".", "")}-${props.walletAddress}-ModalLabel`}
         aria-hidden="true"
       >
         <div className="modal-dialog">
@@ -65,7 +65,7 @@ const TokenTableRowComp = (props: {
             <div className="modal-header">
               <h5
                 className="modal-title"
-                id={`${props.token.symbol}-${props.walletAddress}-ModalLabel`}
+                id={`${props.token.symbol.replaceAll(".", "")}-${props.walletAddress}-ModalLabel`}
               >
                 {props.token.symbol}
               </h5>
