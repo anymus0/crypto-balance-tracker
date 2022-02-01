@@ -17,7 +17,7 @@ export const fetchCryptoData = async (
       name = "thor";
     }
     if (name === "Wrapped MEMO") {
-      name = "Wonderland";
+      name = "wonderland";
     }
     if (name === "Dai Stablecoin") {
       name = "dai";
