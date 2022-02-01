@@ -11,7 +11,7 @@ export const fetchCryptoData = async (
   try {
     // rename token names to match CoinGecko the API id
     if (name === "MEMOries") {
-      name = "Wonderland";
+      name = "wonderland";
     }
     if (name === "THOR v2") {
       name = "thor";

@@ -45,9 +45,17 @@ export const getERC20Tokens = async (
         id: uuidv4(),
         value: uniqueFoundERC20Token,
       });
-    });
-
-    return filteredContractAccounts;
+    });    
+    // remove known scam tokens
+    const cleanFilteredContractAccounts = filteredContractAccounts.filter(
+      (filteredContractAccount) => {
+        return (
+          filteredContractAccount.value !==
+          "0xb2d22ca38dabf2bbad089b47f9c0b8824d06515f"
+        );
+      }
+    );
+    return cleanFilteredContractAccounts;
   } catch (error) {
     // on error return the existing contractAccounts with no additions
     console.error(error);
