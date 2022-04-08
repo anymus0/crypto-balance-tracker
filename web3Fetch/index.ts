@@ -1,6 +1,7 @@
 import { EthAccount, ContractAccount, Token } from "../models/Account";
 import { ERC20Abi } from "../models/ContractABI";
 import { getERC20Tokens } from "./getERC20Tokens";
+import { getStakedWmemoBalance } from "./getWmemoRevShareBalances";
 // web3
 import { BigNumber, ethers } from "ethers";
 const web3Provider = new ethers.providers.JsonRpcProvider(
@@ -9,7 +10,7 @@ const web3Provider = new ethers.providers.JsonRpcProvider(
 // scripts
 import { getUnclaimedThorReward } from "./getThorRewards";
 import { fetchCryptoData } from "./fetchCryptoData";
-import { getEthBalanceInEther } from './getEthBalanceInEther';
+import { getEthBalanceInEther } from "./getEthBalanceInEther";
 
 // get token balances of an eth address
 const getTokenBalances = async (
@@ -42,8 +43,13 @@ const getTokenBalances = async (
           web3Provider
         );
       }
+      // if token is wMEMO, then add the balance from the stake contarct to the actual balance
+      if (contract.value === "0x0da67235dd5787d67955420c84ca1cecd4e5bb3b") {
+        balance += await getStakedWmemoBalance(ethAccountAddress);
+      }
+      
       // skip tokens with a balance of 0
-      if (balance <= 0) {
+      if (balance <= 0 || balance <= 3e-9) {
         continue;
       }
       const name: string = await contractInstance.name();
