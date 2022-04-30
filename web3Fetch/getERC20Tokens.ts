@@ -25,7 +25,7 @@ export const getERC20Tokens = async (
     // remove duplicates
     const existingContracts: string[] = [];
     contractAccounts.forEach((contractAccount) => {
-      existingContracts.push(contractAccount.value);
+      existingContracts.push(contractAccount.value.toLocaleLowerCase());
     });
     const uniqueFoundERC20Tokens: string[] = [];
     ERC20Transactions.result.forEach((ERC20Transaction) => {
@@ -43,10 +43,9 @@ export const getERC20Tokens = async (
     uniqueFoundERC20Tokens.forEach((uniqueFoundERC20Token) => {
       filteredContractAccounts.push({
         id: uuidv4(),
-        value: uniqueFoundERC20Token,
+        value: uniqueFoundERC20Token.toLocaleLowerCase(),
       });
     });
-
     return filteredContractAccounts;
   } catch (error) {
     // on error return the existing contractAccounts with no additions

@@ -20,11 +20,7 @@ const getTokenBalances = async (
 ) => {
   try {
     const tokens: Token[] = [];
-    // manually add $STRNGR contract to support addresses with: unclaimed rewards, but no ERC20 transaction of $STRNGR yet
-    contracts.push({
-      id: uuidv4(),
-      value: "0xDc0327D50E6C73db2F8117760592C8BBf1CDCF38",
-    });
+
     for (const contract of contracts) {
       // query ERC20 contract
       const contractInstance = new ethers.Contract(
@@ -42,7 +38,7 @@ const getTokenBalances = async (
       );
       // if token is STRONG, then add the unclaimed tokens from the contract
       // TODO: support $STRONGER token
-      if (contract.value === "0xDc0327D50E6C73db2F8117760592C8BBf1CDCF38") {
+      if (contract.value.toLocaleLowerCase() === "0xdc0327d50e6c73db2f8117760592c8bbf1cdcf38") {
         balance += await getUnclaimedStrongReward(
           ethAccountAddress,
           web3Provider
@@ -105,7 +101,7 @@ export const getPopulatedEthAccounts = async (
           "ethereum",
           "ETH",
           currency,
-          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2"
+          "0xC02aaA39b223FE8D0A0e5C4F27eAD9083C756Cc2".toLocaleLowerCase()
         ),
       };
       populatedEthAccount.tokens.unshift(ethToken);

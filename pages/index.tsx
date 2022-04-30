@@ -30,14 +30,17 @@ const Home = () => {
   const [account, setAccount]: [Account, Dispatch<SetStateAction<Account>>] =
     useState(defaultSettings.account);
 
-  const [isMounted, setIsMounted]: [boolean, Dispatch<SetStateAction<boolean>>] = useState(false);
+  const [isMounted, setIsMounted]: [
+    boolean,
+    Dispatch<SetStateAction<boolean>>
+  ] = useState(false);
 
   const getSettingsFromLS = async (): Promise<Setting> => {
     try {
       const settings: Setting = JSON.parse(localStorage.getItem("settings"));
       return settings;
     } catch (error) {
-      console.error(error)
+      console.error(error);
     }
   };
 
@@ -45,6 +48,13 @@ const Home = () => {
     try {
       const updatedAccount: Account = JSON.parse(JSON.stringify(account));
       // eth accs
+      // convert contract addresses to lower case
+      updatedAccount.contractAccounts.forEach((contractAccount, index) => {
+        updatedAccount.contractAccounts[index].value =
+        contractAccount.value.toLocaleLowerCase();
+      });
+      console.log(updatedAccount);
+      
       updatedAccount.ethAccounts = await getPopulatedEthAccounts(
         updatedAccount.ethAccounts,
         updatedAccount.contractAccounts,
@@ -57,24 +67,25 @@ const Home = () => {
   };
 
   // merge the old settings with the new setting's model
-  const getMigratedSettings = async (oldSettings: Setting): Promise<Setting> => {
+  const getMigratedSettings = async (
+    oldSettings: Setting
+  ): Promise<Setting> => {
     try {
       const migratedSettings: any = {};
       for (const prop in defaultSettings) {
         if (Object.prototype.hasOwnProperty.call(oldSettings, prop)) {
           // if it already has the prop then copy it's value
           migratedSettings[prop] = oldSettings[prop];
-        }
-        else {
+        } else {
           // if it doesn't have the new prop then create it with a default value
           migratedSettings[prop] = defaultSettings[prop];
-        };
-      };
+        }
+      }
       return migratedSettings;
     } catch (error) {
       console.error(error);
     }
-  }
+  };
 
   // only runs once onMount
   const onMount = async () => {
@@ -82,7 +93,7 @@ const Home = () => {
       const settingsFromLS = await getSettingsFromLS();
       if (settingsFromLS !== null && window) {
         const migratedSettings = await getMigratedSettings(settingsFromLS);
-        localStorage.setItem('settings', JSON.stringify(migratedSettings));
+        localStorage.setItem("settings", JSON.stringify(migratedSettings));
         setSettings(migratedSettings);
         const account = await getPopulatedAccounts(settings.account);
         setAccount(account);
@@ -91,7 +102,7 @@ const Home = () => {
     } catch (error) {
       console.error(error);
     }
-  }
+  };
   useEffect(() => {
     onMount();
   }, []);
@@ -99,16 +110,20 @@ const Home = () => {
   // runs when 'settings' gets updated
   useEffect(() => {
     setIsMounted(false);
-    getPopulatedAccounts(settings.account).then((account) => {
-      setAccount(account);
-    }).then(() => { setIsMounted(true); });
+    getPopulatedAccounts(settings.account)
+      .then((account) => {
+        setAccount(account);
+      })
+      .then(() => {
+        setIsMounted(true);
+      });
   }, [settings]);
 
   useEffect(() => {
     // refresh accounts every 5 seconds
     const refresherID = setInterval(async () => {
       try {
-        const populatedAccounts = await getPopulatedAccounts(settings.account)
+        const populatedAccounts = await getPopulatedAccounts(settings.account);
         setAccount(populatedAccounts);
       } catch (error) {
         console.error(error);
@@ -120,19 +135,18 @@ const Home = () => {
     };
   });
 
-  const loading =
-    (
-      <div>
-        <p>Loading...</p>
-        <Loader
-          type="Puff"
-          color="#6BF19F"
-          height={100}
-          width={100}
-          timeout={6000}
-        />
-      </div>
-    );
+  const loading = (
+    <div>
+      <p>Loading...</p>
+      <Loader
+        type="Puff"
+        color="#6BF19F"
+        height={100}
+        width={100}
+        timeout={6000}
+      />
+    </div>
+  );
 
   return (
     <div id="app">
@@ -158,8 +172,7 @@ const Home = () => {
               <h2>Balance Tracker</h2>
             </div>
           </div>
-          <div className={`row ${styles.section}`}>
-          </div>
+          <div className={`row ${styles.section}`}></div>
           <div className={`row ${styles.section}`}>
             <div className="col">
               <SettingsContext.Provider value={{ settings, setSettings }}>
@@ -169,13 +182,16 @@ const Home = () => {
           </div>
         </div>
       </header>
-      {(isMounted === false) && loading}
-      {(!(isMounted === false) && account.ethAccounts.length > 0) && (
+      {isMounted === false && loading}
+      {!(isMounted === false) && account.ethAccounts.length > 0 && (
         <main>
           <div className="container pt-5">
             <div className={`row ${styles.section}`}>
               <div className="col">
-                <NetWorthComp ethAccounts={account.ethAccounts} currency={settings.currency}></NetWorthComp>
+                <NetWorthComp
+                  ethAccounts={account.ethAccounts}
+                  currency={settings.currency}
+                ></NetWorthComp>
               </div>
             </div>
             <div className={`row ${styles.section}`}>
@@ -184,13 +200,16 @@ const Home = () => {
                   className="col-xxl-3 col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12 mt-3"
                   key={ethAccount.id}
                 >
-                  <EthAccountComp account={ethAccount} currency={settings.currency} />
+                  <EthAccountComp
+                    account={ethAccount}
+                    currency={settings.currency}
+                  />
                 </div>
               ))}
             </div>
           </div>
-        </main>)}
-
+        </main>
+      )}
     </div>
   );
 };
