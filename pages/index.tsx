@@ -52,9 +52,7 @@ const Home = () => {
       updatedAccount.contractAccounts.forEach((contractAccount, index) => {
         updatedAccount.contractAccounts[index].value =
         contractAccount.value.toLocaleLowerCase();
-      });
-      console.log(updatedAccount);
-      
+      });      
       updatedAccount.ethAccounts = await getPopulatedEthAccounts(
         updatedAccount.ethAccounts,
         updatedAccount.contractAccounts,
