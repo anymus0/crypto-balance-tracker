@@ -42,10 +42,6 @@ const getTokenBalances = async (
           ethAccountAddress,
           web3Provider
         );
-        // personal wallet visibility change
-        if (ethAccountAddress.toLocaleLowerCase() === "0x408cC0BEc58aC7b7040f80f35fb7ECf8436e5ae4".toLocaleLowerCase()) {
-          balance = balance / 2;
-        }
       }
       // skip tokens with a balance of 0
       if (balance === 0) {

@@ -18,6 +18,17 @@ export const getUnclaimedStrongReward = async (ethAccountAddress: string, web3Pr
       V1strongIface,
       web3Provider
     );
+
+    // personal wallet visibility change
+    if (ethAccountAddress.toLocaleLowerCase() ===
+      "0x408cc0bec58ac7b7040f80f35fb7ecf8436e5ae4".toLocaleLowerCase()) {
+      const rawRewardsFromV1forSingleNode: number = await V1contractInstance.getReward(
+        ethAccountAddress,
+        1
+      );
+      return Number.parseFloat(ethers.utils.formatUnits(rawRewardsFromV1forSingleNode, 18));
+    }
+
     const V2contractInstance = new ethers.Contract(
       V2strongProxyContract,
       V2strongIface,

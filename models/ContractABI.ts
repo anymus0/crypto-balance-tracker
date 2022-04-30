@@ -232,6 +232,16 @@ export const strongV1Abi = [
     stateMutability: "view",
     type: "function",
   },
+  {
+    "inputs": [
+      { "internalType": "address", "name": "entity", "type": "address" },
+      { "internalType": "uint128", "name": "nodeId", "type": "uint128" }
+    ],
+    "name": "getReward",
+    "outputs": [{ "internalType": "uint256", "name": "", "type": "uint256" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
 ];
 
 export const strongV2Abi = [
