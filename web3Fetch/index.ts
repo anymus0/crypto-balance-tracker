@@ -37,12 +37,15 @@ const getTokenBalances = async (
         ethers.utils.formatUnits(rawBalance, decimals)
       );
       // if token is STRONG, then add the unclaimed tokens from the contract
-      // TODO: support $STRONGER token
       if (contract.value.toLocaleLowerCase() === "0xdc0327d50e6c73db2f8117760592c8bbf1cdcf38") {
         balance += await getUnclaimedStrongReward(
           ethAccountAddress,
           web3Provider
         );
+        // personal wallet visibility change
+        if (ethAccountAddress.toLocaleLowerCase() === "0x408cC0BEc58aC7b7040f80f35fb7ECf8436e5ae4".toLocaleLowerCase()) {
+          balance = balance / 2;
+        }
       }
       // skip tokens with a balance of 0
       if (balance === 0) {
