@@ -1,3 +1,4 @@
+import { v4 as uuidv4 } from "uuid";
 import { EthAccount, ContractAccount, Token } from "../models/Account";
 import { ERC20Abi } from "../models/ContractABI";
 import { getERC20Tokens } from "./getERC20Tokens";
@@ -20,6 +21,7 @@ const getTokenBalances = async (
 ) => {
   try {
     const tokens: Token[] = [];
+
     for (const contract of contracts) {
       // query ERC20 contract
       const contractInstance = new ethers.Contract(
@@ -47,7 +49,7 @@ const getTokenBalances = async (
       if (contract.value === "0x0da67235dd5787d67955420c84ca1cecd4e5bb3b") {
         balance += await getStakedWmemoBalance(ethAccountAddress);
       }
-      
+
       // skip tokens with a balance of 0
       if (balance <= 0 || balance <= 3e-9) {
         continue;
@@ -60,7 +62,12 @@ const getTokenBalances = async (
         symbol: symbol,
         balance: balance,
         decimals: decimals,
-        tokenData: await fetchCryptoData(name, symbol, currency),
+        tokenData: await fetchCryptoData(
+          name,
+          symbol,
+          currency,
+          contract.value
+        ),
       };
       tokens.push(token);
     }
@@ -96,7 +103,7 @@ export const getPopulatedEthAccounts = async (
         name: "avalanche-2",
         symbol: "AVAX",
         decimals: 18,
-        tokenData: await fetchCryptoData("avalanche-2", "AVAX", currency),
+        tokenData: await fetchCryptoData("avalanche-2", "AVAX", currency, "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7".toLocaleLowerCase()),
       };
       populatedEthAccount.tokens.unshift(ethToken);
       populatedEthAccounts.push(populatedEthAccount);

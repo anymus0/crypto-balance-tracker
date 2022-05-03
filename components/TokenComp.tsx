@@ -20,7 +20,7 @@ const TokenComp = (props: {
           <img
             width={32}
             height={32}
-            src={props.token.tokenData.result.image}
+            src={props.token.tokenData.image}
             alt="logo"
           />
           <h6 className="m-0">{props.token.symbol}</h6>
@@ -29,15 +29,15 @@ const TokenComp = (props: {
         <div className="col-12 d-flex align-items-center justify-content-center">
           <p>
             {`Value: ${formatCurrency(
-              props.token.balance * props.token.tokenData.result.current_price,
-              props.currency
+              props.token.balance * props.token.tokenData.currentPrice,
+              props.token.tokenData.currency
             )}`}
           </p>
         </div>
         <div className="col-12 d-flex align-items-center justify-content-center">
           <p>
             {`Market: ${formatCurrency(
-              props.token.tokenData.result.current_price,
+              props.token.tokenData.currentPrice,
               props.currency
             )}`}
           </p>
@@ -46,7 +46,9 @@ const TokenComp = (props: {
           <button
             className="btn btn-primary shadow-lg mt-2"
             data-bs-toggle="modal"
-            data-bs-target={`#${props.token.symbol.replaceAll(".", "")}-${props.walletAddress}-Modal`}
+            data-bs-target={`#${props.token.symbol.replaceAll(".", "")}-${
+              props.walletAddress
+            }-Modal`}
           >
             Details
           </button>
@@ -55,9 +57,13 @@ const TokenComp = (props: {
       {/* <!-- Modal --> */}
       <div
         className={`modal fade ${styles.tokenModal}`}
-        id={`${props.token.symbol.replaceAll(".", "")}-${props.walletAddress}-Modal`}
+        id={`${props.token.symbol.replaceAll(".", "")}-${
+          props.walletAddress
+        }-Modal`}
         tabIndex={-1}
-        aria-labelledby={`${props.token.symbol.replaceAll(".", "")}-${props.walletAddress}-ModalLabel`}
+        aria-labelledby={`${props.token.symbol.replaceAll(".", "")}-${
+          props.walletAddress
+        }-ModalLabel`}
         aria-hidden="true"
       >
         <div className="modal-dialog">
@@ -65,7 +71,9 @@ const TokenComp = (props: {
             <div className="modal-header">
               <h5
                 className="modal-title"
-                id={`${props.token.symbol.replaceAll(".", "")}-${props.walletAddress}-ModalLabel`}
+                id={`${props.token.symbol.replaceAll(".", "")}-${
+                  props.walletAddress
+                }-ModalLabel`}
               >
                 {props.token.symbol}
               </h5>
@@ -77,43 +85,40 @@ const TokenComp = (props: {
               ></button>
             </div>
             <div className="modal-body">
-              <p>{`Balance: ${props.token.balance} ${
-                props.token.symbol
-              }`}</p>
+              <p>{`Balance: ${props.token.balance} ${props.token.symbol}`}</p>
               <hr />
               <p>
                 {`Value: ${formatCurrency(
-                  props.token.balance *
-                    props.token.tokenData.result.current_price,
+                  props.token.balance * props.token.tokenData.currentPrice,
                   props.currency
                 )}`}
               </p>
               <hr />
               <p>{`Market Price: ${formatCurrency(
-                props.token.tokenData.result.current_price,
+                props.token.tokenData.currentPrice,
                 props.currency
               )}`}</p>
               <hr />
               <p>
-                {`24h change: ${props.token.tokenData.result.price_change_percentage_24h.toFixed(
+                {`24h change: ${props.token.tokenData.dailyPercentageChange.toFixed(
                   2
                 )}%`}
               </p>
               <hr />
               <p>
                 Last updated:{" "}
-                {formatDate(props.token.tokenData.result.last_updated)}
+                {formatDate(props.token.tokenData.lastUpdated)}
               </p>
               <hr />
               <p className="text-start">
-                More info on{" "}
+                More info {" "}
                 <strong>
                   <a
                     className="link-light text-decoration-underline"
-                    href={`https://www.coingecko.com/en/coins/${props.token.tokenData.result.id}`}
+                    href={props.token.tokenData.moreInfoUrl}
                     target="alt_"
                   >
-                    CoinGecko
+                    here
                   </a>
                 </strong>
               </p>
