@@ -30,7 +30,7 @@ export const getUnclaimedStrongReward = async (ethAccountAddress: string, web3Pr
         ethAccountAddress,
         3
       );
-      const sum: Number = (Number.parseFloat(ethers.utils.formatUnits(rawRewardsFromV1forFirstNode, 18))
+      const sum = (Number.parseFloat(ethers.utils.formatUnits(rawRewardsFromV1forFirstNode, 18))
         + Number.parseFloat(ethers.utils.formatUnits(rawRewardsFromV1forThirdNode, 18)));
       return sum;
     }
