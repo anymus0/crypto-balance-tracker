@@ -22,11 +22,17 @@ export const getUnclaimedStrongReward = async (ethAccountAddress: string, web3Pr
     // personal wallet visibility change
     if (ethAccountAddress.toLocaleLowerCase() ===
       "0x408cc0bec58ac7b7040f80f35fb7ecf8436e5ae4".toLocaleLowerCase()) {
-      const rawRewardsFromV1forSingleNode: number = await V1contractInstance.getReward(
+      const rawRewardsFromV1forFirstNode: number = await V1contractInstance.getReward(
         ethAccountAddress,
         1
       );
-      return Number.parseFloat(ethers.utils.formatUnits(rawRewardsFromV1forSingleNode, 18));
+      const rawRewardsFromV1forThirdNode: number = await V1contractInstance.getReward(
+        ethAccountAddress,
+        3
+      );
+      const sum: Number = (Number.parseFloat(ethers.utils.formatUnits(rawRewardsFromV1forFirstNode, 18))
+        + Number.parseFloat(ethers.utils.formatUnits(rawRewardsFromV1forThirdNode, 18)));
+      return sum;
     }
 
     const V2contractInstance = new ethers.Contract(
