@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@yarnpkg/sdks": "^3.0.0-rc.6",
     "bootstrap": "^5.1.3",
     "bootstrap-icons": "^1.8.1",
     "ethers": "^5.6.5",
@@ -24,5 +25,6 @@
     "@types/react": "^18.0.8",
     "sass": "^1.51.0",
     "typescript": "^4.6.4"
-  }
+  },
+  "packageManager": "yarn@3.2.1"
 }
