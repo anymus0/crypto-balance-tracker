@@ -39,6 +39,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@yarnpkg/sdks", "npm:3.0.0-rc.6"],\
             ["bootstrap", "virtual:9ba8701d50f758a3fcd5b09276924a1d85c864cb42d3018caa67c4fd75c880e9beb6e3ec00ecbea5c23160fd9bd73e738354f00f81bd5dc77e481ae159aad896#npm:5.1.3"],\
             ["bootstrap-icons", "npm:1.8.2"],\
+            ["dotenv", "npm:16.0.1"],\
             ["ethers", "npm:5.6.6"],\
             ["next", "virtual:9ba8701d50f758a3fcd5b09276924a1d85c864cb42d3018caa67c4fd75c880e9beb6e3ec00ecbea5c23160fd9bd73e738354f00f81bd5dc77e481ae159aad896#npm:12.1.6"],\
             ["next-pwa", "virtual:9ba8701d50f758a3fcd5b09276924a1d85c864cb42d3018caa67c4fd75c880e9beb6e3ec00ecbea5c23160fd9bd73e738354f00f81bd5dc77e481ae159aad896#npm:5.5.2"],\
@@ -4238,6 +4239,7 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
             ["@yarnpkg/sdks", "npm:3.0.0-rc.6"],\
             ["bootstrap", "virtual:9ba8701d50f758a3fcd5b09276924a1d85c864cb42d3018caa67c4fd75c880e9beb6e3ec00ecbea5c23160fd9bd73e738354f00f81bd5dc77e481ae159aad896#npm:5.1.3"],\
             ["bootstrap-icons", "npm:1.8.2"],\
+            ["dotenv", "npm:16.0.1"],\
             ["ethers", "npm:5.6.6"],\
             ["next", "virtual:9ba8701d50f758a3fcd5b09276924a1d85c864cb42d3018caa67c4fd75c880e9beb6e3ec00ecbea5c23160fd9bd73e738354f00f81bd5dc77e481ae159aad896#npm:12.1.6"],\
             ["next-pwa", "virtual:9ba8701d50f758a3fcd5b09276924a1d85c864cb42d3018caa67c4fd75c880e9beb6e3ec00ecbea5c23160fd9bd73e738354f00f81bd5dc77e481ae159aad896#npm:5.5.2"],\
@@ -4401,6 +4403,15 @@ function $$SETUP_STATE(hydrateRuntimeState, basePath) {
           "packageDependencies": [\
             ["dir-glob", "npm:3.0.1"],\
             ["path-type", "npm:4.0.0"]\
+          ],\
+          "linkType": "HARD"\
+        }]\
+      ]],\
+      ["dotenv", [\
+        ["npm:16.0.1", {\
+          "packageLocation": "./.yarn/cache/dotenv-npm-16.0.1-d99e72bb95-f459ffce07.zip/node_modules/dotenv/",\
+          "packageDependencies": [\
+            ["dotenv", "npm:16.0.1"]\
           ],\
           "linkType": "HARD"\
         }]\

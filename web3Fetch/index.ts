@@ -1,4 +1,3 @@
-import { v4 as uuidv4 } from "uuid";
 import { EthAccount, ContractAccount, Token } from "../models/Account";
 import { ERC20Abi } from "../models/ContractABI";
 import { getERC20Tokens } from "./getERC20Tokens";

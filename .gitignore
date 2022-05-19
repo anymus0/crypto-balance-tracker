@@ -53,4 +53,4 @@ public/workbox-*.js
 **/public/worker-*.js.map
 
 # env variables
-clientEnv.prod.js
+.env
