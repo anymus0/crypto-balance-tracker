@@ -46,7 +46,15 @@ export const getERC20Tokens = async (
         value: uniqueFoundERC20Token.toLocaleLowerCase(),
       });
     });
-    return filteredContractAccounts;
+    const cleanFilteredContractAccounts = filteredContractAccounts.filter(
+      (filteredContractAccount) => {
+        return (
+          filteredContractAccount.value !==
+          "0x471c3a7f132bc94938516cb2bf6f02c7521d2797"
+        );
+      }
+    );
+    return cleanFilteredContractAccounts;
   } catch (error) {
     // on error return the existing contractAccounts with no additions
     console.error(error);
