@@ -35,7 +35,7 @@ const getTokenBalances = async (
       let balance: number = Number.parseFloat(
         ethers.utils.formatUnits(rawBalance, decimals)
       );
-      // if token is STRONG, then add the unclaimed tokens from the contract
+      // if token is STRONG, then add the unclaimed tokens from the contract      
       if (contract.value.toLocaleLowerCase() === "0xdc0327d50e6c73db2f8117760592c8bbf1cdcf38") {
         balance += await getUnclaimedStrongReward(
           ethAccountAddress,
