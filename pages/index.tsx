@@ -12,7 +12,6 @@ import { getPopulatedEthAccounts } from "../web3Fetch";
 import SettingsComp from "../components/settings/SettingsComp";
 import EthAccountComp from "../components/EthAccountComp";
 import NetWorthComp from "../components/NetWorthComp";
-import { Puff } from "react-loader-spinner";
 import styles from "../styles/Home.module.scss";
 // models
 import { Setting, defaultSettings } from "./../models/Setting";
@@ -136,7 +135,6 @@ const Home = () => {
   const loading = (
     <div>
       <p>Loading...</p>
-      <Puff color="#6BF19F" height={100} width={100} />
     </div>
   );
 
