@@ -52,7 +52,9 @@ export const getERC20Tokens = async (
           filteredContractAccount.value !==
             "0x471c3a7f132bc94938516cb2bf6f02c7521d2797" &&
           filteredContractAccount.value !==
-            "0x0dcab5a88af37442ec823be4e522879231226c37"
+            "0x0dcab5a88af37442ec823be4e522879231226c37" &&
+          filteredContractAccount.value !==
+            "0x4b0ecd82010107b609b0bee740f176326e3d64e3"
         );
       }
     );
