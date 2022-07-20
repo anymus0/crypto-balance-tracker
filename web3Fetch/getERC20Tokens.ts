@@ -50,7 +50,8 @@ export const getERC20Tokens = async (
       (filteredContractAccount) => {
         return (
           filteredContractAccount.value !==
-          "0x471c3a7f132bc94938516cb2bf6f02c7521d2797"
+          "0x471c3a7f132bc94938516cb2bf6f02c7521d2797",
+          "0x0dcaB5a88Af37442ec823BE4e522879231226C37"
         );
       }
     );
