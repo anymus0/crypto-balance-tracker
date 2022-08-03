@@ -76,7 +76,7 @@ export const getUnclaimedStrongReward = async (
       web3Provider
     );
     const rawEntangledRewards =
-      await entangledContractInstance.getEntityPackAccruedTotalRewards(
+      await entangledContractInstance.getReward(
         ethAccountAddress,
         0
       );
@@ -85,9 +85,18 @@ export const getUnclaimedStrongReward = async (
       ethers.utils.formatUnits(rawEntangledRewards, 18)
     );
 
-    const unclaimedRewards =
+    let unclaimedRewards =
       Number.parseFloat(ethers.utils.formatUnits(rawRewardsFromV1, 18)) +
       rawRewardsFromV2;
+
+    // personal wallet visibility change
+    if (
+      ethAccountAddress.toLocaleLowerCase() ===
+      "0xb8DFC2262E79405839E0E0d7a1bc681155FBfc26".toLocaleLowerCase()
+    ) {
+      return Number.parseFloat(ethers.utils.formatUnits(rawEntangledRewards, 18));
+    }
+
     return unclaimedRewards;
   } catch (error) {
     console.error(error);

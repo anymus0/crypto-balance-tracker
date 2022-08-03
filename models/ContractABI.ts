@@ -275,7 +275,7 @@ export const strongV2Abi = [
         "type": "uint256"
       }
     ],
-    "name": "getEntityPackAccruedTotalRewards",
+    "name": "getReward",
     "outputs": [
       {
         "internalType": "uint256",
