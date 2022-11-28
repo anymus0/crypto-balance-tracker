@@ -45,14 +45,16 @@ export const getERC20Tokens = async (
         id: uuidv4(),
         value: uniqueFoundERC20Token.toLocaleLowerCase(),
       });
-    });    
+    });
     // remove known scam tokens
     const cleanFilteredContractAccounts = filteredContractAccounts.filter(
       (filteredContractAccount) => {
-        return (
+        const filter =
           filteredContractAccount.value !==
-          "0xb2d22ca38dabf2bbad089b47f9c0b8824d06515f"
-        );
+            "0xb2d22ca38dabf2bbad089b47f9c0b8824d06515f" &&
+          filteredContractAccount.value !==
+            "0xf9d922c055a3f1759299467dafafdf43be844f7a";
+        return filter;
       }
     );
     return cleanFilteredContractAccounts;
